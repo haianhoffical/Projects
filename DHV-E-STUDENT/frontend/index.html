@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHV E-STUDENT – Sàn Giao Dịch Sinh Viên</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   style.css — Toàn bộ giao diện (CSS) của DHV E-STUDENT
+   Tách riêng khỏi HTML để dễ chỉnh sửa màu sắc, layout mà không ảnh hưởng
+   tới phần nội dung (index.html) hay phần xử lý (các file trong thư mục js/).
+   ============================================================================ */
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#1B3A8A;--blue2:#2563EB;--blue3:#3B82F6;--gold:#F59E0B;--gold2:#D97706;--green:#10B981;--red:#EF4444;--purple:#8B5CF6;--bg:#EEF4FF;--card:#fff;--text:#1E293B;--muted:#64748B;--border:#E2E8F0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.hide{display:none!important}
+
+/* ── HEADER ── */
+header{background:linear-gradient(120deg,#0F2460,#1B3A8A 55%,#1D4ED8);position:sticky;top:0;z-index:1000;box-shadow:0 2px 24px rgba(15,36,96,.35)}
+.hdr{max-width:1300px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;cursor:pointer}
+.lbox{width:46px;height:46px;background:linear-gradient(135deg,#F59E0B,#FBBF24);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.ltxt .nm{font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px;line-height:1.1}
+.ltxt .sb{font-size:10px;color:rgba(255,255,255,.65);letter-spacing:1.5px;text-transform:uppercase}
+.sw{flex:1;position:relative}
+.sbar{display:flex;background:#fff;border-radius:50px;overflow:visible;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.sbar input{flex:1;padding:10px 20px;border:none;outline:none;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;border-radius:50px 0 0 50px;min-width:0}
+.sbar button{padding:10px 22px;background:var(--gold);border:none;cursor:pointer;color:#fff;font-size:15px;border-radius:0 50px 50px 0;flex-shrink:0;transition:.2s}
+.sbar button:hover{background:var(--gold2)}
+
+/* SEARCH DROPDOWN */
+#sdrop{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.18);z-index:2000;max-height:460px;overflow-y:auto}
+.sg-title{padding:10px 16px 4px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.si{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;transition:background .15s}
+.si:hover{background:#EEF4FF}
+.si-ico{font-size:22px;width:34px;text-align:center;flex-shrink:0}
+.si-main{flex:1;min-width:0}
+.si-name{font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+.si-price{font-size:13px;font-weight:800;color:var(--red);flex-shrink:0}
+.sdiv{height:1px;background:var(--border);margin:4px 0}
+.sempty{padding:28px;text-align:center;color:var(--muted);font-size:14px}
+.see-all-btn{display:block;padding:12px;text-align:center;font-size:13px;font-weight:700;color:var(--blue);cursor:pointer;border-top:1px solid var(--border);transition:background .15s}
+.see-all-btn:hover{background:#EEF4FF}
+
+.hi{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.ibtn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;position:relative;transition:.2s}
+.ibtn:hover{background:rgba(255,255,255,.28)}
+.bdg{position:absolute;top:-2px;right:-2px;background:var(--red);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ba{padding:8px 16px;border-radius:50px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.bl{background:transparent;border:2px solid rgba(255,255,255,.5);color:#fff}.bl:hover{background:rgba(255,255,255,.12)}
+.br{background:var(--gold);border:2px solid var(--gold);color:#fff}.br:hover{background:var(--gold2)}
+
+/* ── NAV ── */
+.navbar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:66px;z-index:999}
+.nav-in{max-width:1300px;margin:0 auto;padding:0 20px;display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-in::-webkit-scrollbar{display:none}
+.ni{display:flex;align-items:center;gap:7px;padding:13px 15px;color:var(--muted);font-size:13.5px;font-weight:600;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s;cursor:pointer;user-select:none;border-top:3px solid transparent}
+.ni:hover{color:var(--blue)}.ni.act{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* ── LAYOUT ── */
+#app{max-width:1300px;margin:0 auto;padding:20px;min-height:60vh}
+.page{display:none}.page.active{display:block}
+
+/* ── HOME ── */
+.hero-row{display:grid;grid-template-columns:1fr 290px;gap:16px;margin-bottom:20px}
+.hmain{background:linear-gradient(130deg,#0F2460,#1B3A8A 50%,#2563EB);border-radius:20px;padding:38px 44px;position:relative;overflow:hidden;min-height:240px;display:flex;align-items:center}
+.hmain::before{content:'';position:absolute;top:-60px;right:-60px;width:340px;height:340px;background:rgba(245,158,11,.12);border-radius:50%}
+.hc{position:relative;z-index:1}
+.htag{display:inline-block;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.5);color:#FCD34D;font-size:11px;font-weight:800;padding:4px 14px;border-radius:50px;margin-bottom:12px;letter-spacing:1.5px;text-transform:uppercase}
+.htitle{font-size:30px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px}
+.htitle em{color:#FCD34D;font-style:normal}
+.hsub{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:20px;max-width:400px;line-height:1.6}
+.hbtns{display:flex;gap:10px;flex-wrap:wrap}
+.hp{padding:11px 24px;background:var(--gold);color:#fff;border:none;border-radius:50px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}.hp:hover{background:var(--gold2);transform:translateY(-2px)}
+.hs{padding:11px 20px;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:50px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}.hs:hover{background:rgba(255,255,255,.25)}
+.scol{display:flex;flex-direction:column;gap:14px}
+.scard{border-radius:16px;padding:18px;flex:1;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.2s}
+.scard:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.sg{background:linear-gradient(135deg,#059669,#10B981)}.sp{background:linear-gradient(135deg,#7C3AED,#A78BFA)}
+.sci{font-size:36px}.sct h3{color:#fff;font-size:15px;font-weight:800;margin-bottom:3px}.sct p{color:rgba(255,255,255,.8);font-size:12px;line-height:1.4}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stc{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,.06);border:1px solid var(--border)}
+.sti{font-size:26px;margin-bottom:4px}.stn{font-size:22px;font-weight:900;color:var(--blue)}.stl{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+/* SECTION HDR */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sh h2{font-size:19px;font-weight:800}
+.shlink{color:var(--blue3);font-size:13px;font-weight:600;cursor:pointer;background:none;border:none;font-family:'Be Vietnam Pro',sans-serif}.shlink:hover{color:var(--blue)}
+.mb20{margin-bottom:20px}.mb28{margin-bottom:28px}
+
+/* CATEGORIES */
+.cats{display:grid;grid-template-columns:repeat(9,1fr);gap:10px;margin-bottom:28px}
+.cat{background:#fff;border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;transition:.25s;border:2px solid transparent;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.cat:hover,.cat.sel{border-color:var(--blue3);transform:translateY(-3px);box-shadow:0 6px 20px rgba(30,58,138,.12)}
+.ce{font-size:28px;margin-bottom:6px}.cn{font-size:12px;font-weight:700}.cc{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* PRODUCTS */
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+.pcard{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;transition:.25s;box-shadow:0 1px 8px rgba(0,0,0,.06);border:1px solid var(--border)}
+.pcard:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
+.pimg{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.cnd{position:absolute;top:8px;left:8px;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:800}
+.new{background:#DCFCE7;color:#16A34A}.used{background:#FEF3C7;color:#D97706}.sh2{background:#EDE9FE;color:#7C3AED}
+.wl{position:absolute;top:8px;right:8px;width:30px;height:30px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(0,0,0,.1);cursor:pointer;color:#CBD5E1;transition:.2s;border:none}
+.wl:hover{color:var(--red)}.wl.liked{color:var(--red)}
+.pinf{padding:12px}
+.pn{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pp{font-size:16px;font-weight:900;color:var(--red);margin-bottom:6px}
+.pp s{font-size:11px;color:var(--muted);font-weight:400;margin-left:4px}
+.pm{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.padd{display:block;width:calc(100% - 24px);margin:0 12px 12px;padding:7px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:'Be Vietnam Pro',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+.padd:hover{background:var(--blue2)}
+
+/* ── PRODUCTS PAGE ── */
+.fbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.sl{flex:1;min-width:200px;display:flex;background:#fff;border-radius:50px;border:1.5px solid var(--border);overflow:hidden}
+.sl input{flex:1;padding:9px 16px;border:none;outline:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13.5px;min-width:0}
+.sl button{padding:9px 14px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted)}
+select.fsel{padding:9px 14px;border:1.5px solid var(--border);border-radius:50px;background:#fff;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;cursor:pointer;outline:none;color:var(--text)}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.pill{padding:7px 15px;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;font-family:'Be Vietnam Pro',sans-serif;color:var(--muted)}
+.pill:hover{border-color:var(--blue3);color:var(--blue)}.pill.act{background:var(--blue);border-color:var(--blue);color:#fff}
+.rc{font-size:13px;color:var(--muted);margin-bottom:14px}
+.nores{text-align:center;padding:60px 20px;color:var(--muted)}.nores-i{font-size:56px;margin-bottom:10px}.nores p{font-size:15px}
+.nores a{color:var(--blue3);cursor:pointer;font-weight:600;text-decoration:underline}
+
+/* ── TUTORS PAGE ── */
+.tsb{background:#fff;border-radius:16px;padding:20px 24px;box-shadow:0 2px 16px rgba(0,0,0,.07);border:1px solid var(--border);margin-bottom:24px}
+.tsb-h{font-size:17px;font-weight:900;color:var(--blue);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tsb-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ti{flex:1;min-width:220px;display:flex;background:var(--bg);border-radius:50px;border:1.5px solid var(--border);overflow:hidden}
+.ti input{flex:1;padding:10px 18px;border:none;outline:none;background:transparent;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;min-width:0}
+.ti input::placeholder{color:var(--muted)}
+.ti button{padding:10px 18px;background:var(--gold);border:none;cursor:pointer;color:#fff;font-size:15px;border-radius:0 50px 50px 0;transition:.2s}.ti button:hover{background:var(--gold2)}
+.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tcard{background:#fff;border-radius:16px;padding:20px;text-align:center;border:1px solid var(--border);cursor:pointer;transition:.25s;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.tcard:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.1);border-color:var(--blue3)}
+.tav{width:64px;height:64px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:900}
+.tn2{font-size:15px;font-weight:800;margin-bottom:2px}
+.ts2{font-size:12px;color:var(--muted);margin-bottom:8px}
+.tsubj{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin-bottom:10px}
+.tsj{padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:700;background:var(--bg);color:var(--blue)}
+.trat{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px}
+.stars{color:#F59E0B;font-size:12px}.rn{font-size:11px;color:var(--muted)}
+.tprc{font-size:16px;font-weight:900;color:var(--blue)}.tprc span{font-size:11px;font-weight:400;color:var(--muted)}
+.tchp{margin-top:6px;display:inline-block;padding:3px 12px;background:var(--bg);border-radius:20px;font-size:11px;font-weight:700;color:var(--muted)}
+.cbtn2{display:block;width:100%;margin-top:12px;padding:9px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}.cbtn2:hover{background:#059669}
+
+/* ── FORUM PAGE ── */
+.fpills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.wrbtn{display:flex;align-items:center;gap:10px;background:#fff;border:2px dashed var(--blue3);border-radius:14px;padding:14px 20px;margin-bottom:20px;cursor:pointer;transition:.2s;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:var(--muted);width:100%}
+.wrbtn:hover{background:#EEF4FF;border-color:var(--blue)}
+.fcard{background:#fff;border-radius:14px;padding:18px;border:1px solid var(--border);margin-bottom:14px;cursor:pointer;transition:.2s}
+.fcard:hover{border-color:var(--blue3);box-shadow:0 4px 16px rgba(30,58,138,.08)}
+.fh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.fav3{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800;flex-shrink:0}
+.fu{font-size:13px;font-weight:700}.ft3{font-size:11px;color:var(--muted)}
+.fcat{padding:3px 11px;border-radius:20px;font-size:10.5px;font-weight:700;background:#DBEAFE;color:#1D4ED8;flex-shrink:0}
+.fcat.chia{background:#DCFCE7;color:#16A34A}.fcat.hoi{background:#FEF3C7;color:#D97706}.fcat.hot{background:#FFE4E6;color:#DC2626}
+.ftit{font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.4}
+.fprev{font-size:13px;color:var(--muted);margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5}
+.fst3{display:flex;gap:16px;font-size:12px;color:var(--muted)}
+
+/* ── JOBS PAGE ── */
+.jcard{background:#fff;border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;border:1px solid var(--border);margin-bottom:14px;cursor:pointer;transition:.2s}
+.jcard:hover{border-color:var(--blue3);box-shadow:0 4px 16px rgba(30,58,138,.1)}
+.jlg{width:52px;height:52px;border-radius:14px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.ji{flex:1}.jt{font-size:15px;font-weight:800;margin-bottom:3px}.jc{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+.jtags{display:flex;gap:6px;flex-wrap:wrap}
+.jt2{padding:3px 11px;border-radius:20px;font-size:11.5px;font-weight:700}
+.tp{background:#DBEAFE;color:#1D4ED8}.ty{background:#DCFCE7;color:#16A34A}.tg{background:#F3F4F6;color:#6B7280}.tu{background:#FEF3C7;color:#D97706}
+.apbtn{padding:10px 20px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.2s;flex-shrink:0}.apbtn:hover{background:var(--blue2)}
+
+/* ── MODAL ── */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.mb2{background:#fff;border-radius:20px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto}
+.mh{padding:24px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.mcl{width:36px;height:36px;border-radius:50%;border:none;background:var(--bg);cursor:pointer;font-size:18px;flex-shrink:0;transition:.2s}.mcl:hover{background:var(--border)}
+.mbody{padding:20px 24px 24px}
+.m-pimg{width:100%;height:200px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:16px}
+.m-pname{font-size:20px;font-weight:900;margin-bottom:6px}
+.m-price{font-size:26px;font-weight:900;color:var(--red);margin-bottom:4px}
+.m-oprice{font-size:13px;color:var(--muted);text-decoration:line-through;margin-bottom:12px}
+.m-seller{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin-bottom:16px;padding:12px;background:var(--bg);border-radius:10px}
+.m-desc{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:20px}
+.m-btns{display:flex;gap:10px}
+.m-add{flex:1;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}.m-add:hover{background:var(--blue2)}
+.m-chat{flex:1;padding:13px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.2s}.m-chat:hover{background:#059669}
+.m-tav{width:80px;height:80px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:900}
+.m-tname{font-size:22px;font-weight:900;text-align:center;margin-bottom:4px}
+.m-tinfo{text-align:center;color:var(--muted);font-size:14px;margin-bottom:16px}
+.m-tsubj{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:16px}
+.m-stag{padding:4px 12px;border-radius:20px;font-size:13px;font-weight:700;background:var(--bg);color:var(--blue)}
+.m-tprice{text-align:center;font-size:28px;font-weight:900;color:var(--blue);margin-bottom:4px}
+.m-tsub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:16px}
+.m-tbio{font-size:14px;line-height:1.7;color:var(--text);background:var(--bg);padding:14px;border-radius:12px;margin-bottom:20px}
+.m-trat{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:20px}
+.m-stars{color:#F59E0B;font-size:18px}
+.contact-full{display:block;width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;text-align:center}.contact-full:hover{background:#059669}
+
+/* ── CART ── */
+.cart-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1500}
+.cart-s{position:fixed;top:0;right:0;bottom:0;width:360px;background:#fff;z-index:1501;box-shadow:-4px 0 30px rgba(0,0,0,.12);display:flex;flex-direction:column;transform:translateX(100%);transition:.3s}
+.cart-s.open{transform:translateX(0)}
+.ch{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ch h3{font-size:18px;font-weight:800}
+.ccl{width:34px;height:34px;border-radius:50%;border:none;background:var(--bg);cursor:pointer;font-size:16px;transition:.2s}.ccl:hover{background:var(--border)}
+.cbody{flex:1;overflow-y:auto;padding:16px}
+.ci{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+.ciimg{width:48px;height:48px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.cii{flex:1}
+.cin{font-size:13px;font-weight:600;line-height:1.3;margin-bottom:3px}
+.cip{font-size:14px;font-weight:800;color:var(--red);margin-bottom:6px}
+.ciqw{display:flex;align-items:center;gap:8px}
+.qb{width:26px;height:26px;border-radius:7px;border:1.5px solid var(--border);background:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:.2s}.qb:hover{border-color:var(--blue);color:var(--blue)}
+.qn{font-size:13px;font-weight:700;min-width:20px;text-align:center}
+.cdel{border:none;background:none;cursor:pointer;color:var(--muted);font-size:18px;padding:2px;transition:.2s;margin-left:auto}.cdel:hover{color:var(--red)}
+.cftr{padding:16px;border-top:1px solid var(--border)}
+.ctot{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:800;margin-bottom:14px}
+.ckbtn{display:block;width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;text-align:center}.ckbtn:hover{background:var(--blue2)}
+.ecrt{text-align:center;padding:40px 20px;color:var(--muted)}.ecico{font-size:52px;margin-bottom:10px}
+.ecrt p{font-size:15px;margin-bottom:16px}
+.ecrt button{padding:10px 24px;background:var(--blue);color:#fff;border:none;border-radius:50px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#1E293B;color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:3000;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* CHAT FLOAT */
+.cflt{position:fixed;bottom:28px;right:28px;z-index:1000}
+.cfb{width:56px;height:56px;background:linear-gradient(135deg,#1E3A8A,#3B82F6);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(30,58,138,.45);font-size:22px;color:#fff;transition:.2s;animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 4px 20px rgba(30,58,138,.45)}50%{box-shadow:0 4px 30px rgba(30,58,138,.7),0 0 0 8px rgba(59,130,246,.12)}}
+.cfb:hover{transform:scale(1.1)}.cfn{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:20px}
+
+/* FOOTER */
+footer{background:#0C1A3A;color:rgba(255,255,255,.7);padding:40px 0 20px;margin-top:20px}
+.fin{max-width:1300px;margin:0 auto;padding:0 20px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:36px}
+.fbrd h2{color:#fff;font-size:19px;font-weight:900;margin-bottom:8px}
+.fbrd p{font-size:13px;line-height:1.7;margin-bottom:14px}
+.fsc{display:flex;gap:8px}
+.fsb{width:34px;height:34px;background:rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;cursor:pointer;transition:.2s}.fsb:hover{background:var(--blue3)}
+.fcol h4{color:#fff;font-size:14px;font-weight:800;margin-bottom:12px}
+.fcol a{display:block;color:rgba(255,255,255,.6);font-size:12.5px;margin-bottom:7px;text-decoration:none;transition:.2s}.fcol a:hover{color:var(--gold)}
+.fbot{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.fbot em{color:var(--gold);font-style:normal}
+
+/* BG COLORS */
+.c1{background:linear-gradient(135deg,#EFF6FF,#DBEAFE)}.c2{background:linear-gradient(135deg,#FFF7ED,#FED7AA)}.c3{background:linear-gradient(135deg,#F0FDF4,#BBF7D0)}.c4{background:linear-gradient(135deg,#FDF4FF,#E9D5FF)}.c5{background:linear-gradient(135deg,#FFF1F2,#FFE4E6)}.c6{background:linear-gradient(135deg,#F0FDFF,#BAE6FD)}.c7{background:linear-gradient(135deg,#FEFCE8,#FEF08A)}.c8{background:linear-gradient(135deg,#F0FDF4,#D1FAE5)}.c9{background:linear-gradient(135deg,#EEF2FF,#C7D2FE)}
+.p1{background:linear-gradient(135deg,#EFF6FF,#BFDBFE)}.p2{background:linear-gradient(135deg,#FFF7ED,#FED7AA)}.p3{background:linear-gradient(135deg,#F0FDF4,#86EFAC)}.p4{background:linear-gradient(135deg,#FDF4FF,#D8B4FE)}.p5{background:linear-gradient(135deg,#FFF1F2,#FECACA)}.p6{background:linear-gradient(135deg,#ECFDF5,#A7F3D0)}.p7{background:linear-gradient(135deg,#EFF6FF,#BAE6FD)}.p8{background:linear-gradient(135deg,#FEFCE8,#FDE68A)}
+
+@media(max-width:1100px){.cats{grid-template-columns:repeat(4,1fr)}.pgrid{grid-template-columns:repeat(3,1fr)}.tgrid{grid-template-columns:repeat(2,1fr)}.hero-row{grid-template-columns:1fr}.scol{flex-direction:row}.stats{grid-template-columns:repeat(2,1fr)}.fgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.pgrid{grid-template-columns:repeat(2,1fr)}.tgrid{grid-template-columns:1fr}.cats{grid-template-columns:repeat(3,1fr)}.htitle{font-size:24px}.fgrid{grid-template-columns:1fr}.bl,.br{display:none}.jcard{flex-wrap:wrap}.apbtn{width:100%;margin-top:8px}}
+
+/* ============================================================================
+   PHẦN THÊM: đăng nhập/đăng ký, tài khoản, thông báo, chatbox, đăng tin/bài
+   ============================================================================ */
+.mtitle{font-size:17px;font-weight:800}
+.frow{margin-bottom:14px}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.flabel{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.finput{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;outline:none;transition:.2s;background:#fff;color:var(--text)}
+.finput:focus{border-color:var(--blue3)}
+.ftxtarea{resize:vertical;min-height:70px;font-family:'Be Vietnam Pro',sans-serif}
+.ferr{background:#FEF2F2;color:#DC2626;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;font-weight:600}
+.fbtn-primary{display:block;width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;text-align:center;margin-bottom:10px}
+.fbtn-primary:hover{background:var(--blue2)}
+.fbtn-outline{display:block;width:100%;padding:13px;background:#fff;color:var(--red);border:1.5px solid #FCA5A5;border-radius:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:.2s;text-align:center}
+.fbtn-outline:hover{background:#FEF2F2}
+.fswitch{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+.fswitch a{color:var(--blue3);font-weight:700;text-decoration:none}
+
+.uavt{width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;font-family:'Be Vietnam Pro',sans-serif}
+.notif-wrap{position:relative}
+.ndrop{position:absolute;top:calc(100% + 10px);right:0;width:320px;background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.18);z-index:2000;max-height:420px;overflow-y:auto}
+
+.acc-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.acc-avt{width:56px;height:56px;border-radius:50%;color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acc-name{font-size:17px;font-weight:800}
+.acc-email{font-size:13px;color:var(--muted)}
+.acc-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.acc-row span{color:var(--muted)}
+
+.cavt{width:38px;height:38px;border-radius:50%;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-time{font-size:11px;color:var(--muted);flex-shrink:0;align-self:flex-start;margin-top:2px}
+.cback{width:36px;height:36px;border-radius:50%;border:none;background:var(--bg);cursor:pointer;font-size:17px;flex-shrink:0}
+.csub{font-size:11px;font-weight:500;color:var(--muted);margin-top:1px}
+.cthread{padding:18px 20px;display:flex;flex-direction:column;gap:10px;max-height:380px;overflow-y:auto}
+.cmsg{display:flex;flex-direction:column;max-width:78%}
+.cmsg.mine{align-self:flex-end;align-items:flex-end}
+.cmsg.theirs{align-self:flex-start;align-items:flex-start}
+.cbubble{padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.4}
+.cmsg.mine .cbubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.cmsg.theirs .cbubble{background:var(--bg);color:var(--text);border-bottom-left-radius:4px}
+.ctime{font-size:10.5px;color:var(--muted);margin-top:3px}
+.cinput{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
+.cinput input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:24px;outline:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13.5px}
+.cinput input:focus{border-color:var(--blue3)}
+.cinput button{padding:11px 20px;background:var(--blue);color:#fff;border:none;border-radius:24px;font-weight:700;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;font-size:13.5px}
+.cinput button:hover{background:var(--blue2)}
+
+@media(max-width:768px){.frow2{grid-template-columns:1fr}.ndrop{width:280px;right:-40px}}
+</style>
+</head>
+<body>
+
+
+<!-- ═══ HEADER ═══ -->
+<header>
+<div class="hdr">
+  <div class="logo" onclick="navigate('home')">
+    <div class="lbox">🎓</div>
+    <div class="ltxt"><div class="nm">DHV E-STUDENT</div><div class="sb">Đại học Hùng Vương · TP.HCM</div></div>
+  </div>
+  <div class="sw">
+    <div class="sbar">
+      <input type="text" id="gsearch" placeholder="Tìm sản phẩm, gia sư, việc làm..." autocomplete="off">
+      <button onclick="doGSearch()">🔍</button>
+    </div>
+    <div id="sdrop" class="hide"></div>
+  </div>
+  <div class="hi">
+    <button class="ibtn" onclick="toggleCart()">🛒<span class="bdg" id="cart-badge">0</span></button>
+    <div class="notif-wrap">
+      <button class="ibtn" onclick="toggleNotifications()">🔔<span class="bdg">3</span></button>
+      <div id="notif-drop" class="ndrop hide"></div>
+    </div>
+    <button class="ibtn auth-guest" onclick="openLoginModal()">👤</button>
+    <button class="ba bl auth-guest" onclick="openLoginModal()">Đăng nhập</button>
+    <button class="ba br auth-guest" onclick="openRegisterModal()">Đăng ký</button>
+    <button class="uavt auth-user hide" id="user-avatar-btn" onclick="openAccountModal()">DH</button>
+  </div>
+</div>
+</header>
+
+<!-- ═══ NAV ═══ -->
+<nav class="navbar">
+<div class="nav-in">
+  <div class="ni act" data-page="home" onclick="navigate('home')">🏠 Trang chủ</div>
+  <div class="ni" data-page="products" data-pcat="all" onclick="navigate('products',{pcat:'all'})">🛍️ Mua & Bán</div>
+  <div class="ni" data-page="products" data-pcat="fashion" onclick="navigate('products',{pcat:'fashion'})">👗 Thời trang</div>
+  <div class="ni" data-page="products" data-pcat="electronics" onclick="navigate('products',{pcat:'electronics'})">📱 Điện tử</div>
+  <div class="ni" data-page="products" data-pcat="handmade" onclick="navigate('products',{pcat:'handmade'})">🎨 Handmade</div>
+  <div class="ni" data-page="products" data-pcat="housing" onclick="navigate('products',{pcat:'housing'})">🛏️ Tìm trọ</div>
+  <div class="ni" data-page="tutors" onclick="navigate('tutors')">📚 Tìm gia sư</div>
+  <div class="ni" data-page="jobs" onclick="navigate('jobs')">💼 Việc làm</div>
+  <div class="ni" data-page="forum" onclick="navigate('forum')">💬 Diễn đàn</div>
+</div>
+</nav>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+
+<!-- ── PAGE HOME ── -->
+<div id="page-home" class="page active">
+  <div class="hero-row">
+    <div class="hmain">
+      <div class="hc">
+        <div class="htag">🎓 Dành riêng cho sinh viên DHV</div>
+        <h1 class="htitle">Mua bán, học tập &<br><em>kết nối</em> cộng đồng</h1>
+        <p class="hsub">Sàn thương mại điện tử đầu tiên dành riêng cho sinh viên Đại học Hùng Vương TP.HCM. An toàn · Tiện lợi · Tiết kiệm.</p>
+        <div class="hbtns">
+          <button class="hp" onclick="navigate('products',{pcat:'all'})">🛍️ Khám phá ngay</button>
+          <button class="hs" onclick="openPostListingModal()">📝 Đăng bán miễn phí</button>
+        </div>
+      </div>
+    </div>
+    <div class="scol">
+      <div class="scard sg" onclick="navigate('tutors')"><div class="sci">📚</div><div class="sct"><h3>Tìm gia sư ngay</h3><p>Hàng trăm gia sư sinh viên DHV sẵn sàng hỗ trợ</p></div></div>
+      <div class="scard sp" onclick="navigate('jobs')"><div class="sci">💼</div><div class="sct"><h3>Việc làm part-time</h3><p>Tìm việc phù hợp lịch học, linh hoạt thời gian</p></div></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stc"><div class="sti">👤</div><div class="stn">2.500+</div><div class="stl">Sinh viên tham gia</div></div>
+    <div class="stc"><div class="sti">🛍️</div><div class="stn">1.200+</div><div class="stl">Sản phẩm đang bán</div></div>
+    <div class="stc"><div class="sti">📚</div><div class="stn">350+</div><div class="stl">Gia sư / Học sinh</div></div>
+    <div class="stc"><div class="sti">💬</div><div class="stn">900+</div><div class="stl">Bài đăng diễn đàn</div></div>
+  </div>
+  <div class="sh mb20"><h2>📦 Danh mục chính</h2><button class="shlink" onclick="navigate('products',{pcat:'all'})">Xem tất cả →</button></div>
+  <div class="cats mb28" id="home-cats"></div>
+  <div class="sh mb20"><h2>🔄 Đồ secondhand hot nhất</h2><button class="shlink" onclick="navigate('products',{pcat:'all',pcond:'secondhand'})">Xem tất cả →</button></div>
+  <div class="pgrid mb28" id="home-products"></div>
+  <div class="sh mb20"><h2>📚 Gia sư nổi bật</h2><button class="shlink" onclick="navigate('tutors')">Xem tất cả →</button></div>
+  <div class="tgrid mb28" id="home-tutors"></div>
+</div>
+
+<!-- ── PAGE PRODUCTS ── -->
+<div id="page-products" class="page">
+  <div class="sh mb20"><h2 id="products-title">🛍️ Mua & Bán</h2></div>
+  <div class="fbar">
+    <div class="sl"><input type="text" id="psearch" placeholder="Tìm sản phẩm..." oninput="filterProducts()"><button onclick="filterProducts()">🔍</button></div>
+    <select class="fsel" id="pcond" onchange="filterProducts()">
+      <option value="all">Tất cả tình trạng</option>
+      <option value="new">Mới</option>
+      <option value="used">Đã dùng</option>
+      <option value="secondhand">Second-hand</option>
+      <option value="available">Còn phòng</option>
+    </select>
+    <select class="fsel" id="psort" onchange="filterProducts()">
+      <option value="newest">Mới nhất</option>
+      <option value="price-asc">Giá thấp → cao</option>
+      <option value="price-desc">Giá cao → thấp</option>
+    </select>
+  </div>
+  <div class="pills" id="cat-pills"></div>
+  <div class="rc" id="product-count"></div>
+  <div class="pgrid" id="products-grid"></div>
+</div>
+
+<!-- ── PAGE TUTORS ── -->
+<div id="page-tutors" class="page">
+  <div class="sh mb20"><h2>📚 Tìm gia sư & Học sinh</h2></div>
+  <div class="tsb">
+    <div class="tsb-h">🔍 Tìm gia sư ngay – gõ tên hoặc môn học</div>
+    <div class="tsb-row">
+      <div class="ti"><input type="text" id="tsearch" placeholder="VD: Toán cao cấp, Lập trình, Hải Anh..." oninput="filterTutors()" autocomplete="off"><button onclick="filterTutors()">🔍</button></div>
+      <select class="fsel" id="tprice" onchange="filterTutors()">
+        <option value="0">Tất cả mức giá</option>
+        <option value="60000">Dưới 60.000đ/giờ</option>
+        <option value="80000">Dưới 80.000đ/giờ</option>
+        <option value="100000">Dưới 100.000đ/giờ</option>
+      </select>
+      <select class="fsel" id="tsort" onchange="filterTutors()">
+        <option value="rating">Đánh giá cao nhất</option>
+        <option value="price-asc">Giá thấp → cao</option>
+        <option value="price-desc">Giá cao → thấp</option>
+        <option value="reviews">Nhiều đánh giá nhất</option>
+      </select>
+    </div>
+    <div class="pills" id="subj-pills"></div>
+  </div>
+  <div class="rc" id="tutor-count"></div>
+  <div class="tgrid" id="tutors-grid"></div>
+</div>
+
+<!-- ── PAGE FORUM ── -->
+<div id="page-forum" class="page">
+  <div class="sh mb20"><h2>💬 Diễn đàn sinh viên DHV</h2></div>
+  <div class="fpills" id="forum-pills"></div>
+  <div class="fbar" style="margin-bottom:20px">
+    <div class="sl" style="max-width:400px"><input type="text" id="fsearch" placeholder="Tìm bài viết..." oninput="filterForum()"><button onclick="filterForum()">🔍</button></div>
+  </div>
+  <div class="wrbtn" onclick="openNewForumPostModal()">✏️ Đăng bài mới...</div>
+  <div id="forum-list"></div>
+</div>
+
+<!-- ── PAGE JOBS ── -->
+<div id="page-jobs" class="page">
+  <div class="sh mb20"><h2>💼 Việc làm sinh viên</h2></div>
+  <div class="fpills" id="job-pills"></div>
+  <div class="fbar" style="margin-bottom:20px">
+    <div class="sl" style="max-width:400px"><input type="text" id="jsearch" placeholder="Tìm việc làm..." oninput="filterJobs()"><button onclick="filterJobs()">🔍</button></div>
+  </div>
+  <div id="jobs-list"></div>
+</div>
+
+</div><!-- end #app -->
+
+<!-- ═══ MODAL ═══ -->
+<div id="modal" class="hide">
+  <div class="mo" onclick="closeModal(event)">
+    <div class="mb2" id="modal-box" onclick="event.stopPropagation()"></div>
+  </div>
+</div>
+
+<!-- ═══ CART ═══ -->
+<div id="cart-overlay" class="hide">
+  <div class="cart-ov" onclick="toggleCart()"></div>
+  <div class="cart-s" id="cart-sidebar">
+    <div class="ch"><h3>🛒 Giỏ hàng</h3><button class="ccl" onclick="toggleCart()">✕</button></div>
+    <div class="cbody" id="cart-body"></div>
+    <div class="cftr" id="cart-footer"></div>
+  </div>
+</div>
+
+<!-- ═══ CHAT FLOAT ═══ -->
+<div class="cflt"><div class="cfb" onclick="openChatInbox()">💬</div><div class="cfn">3</div></div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+<div class="fin">
+  <div class="fgrid">
+    <div class="fbrd">
+      <h2>🎓 DHV E-STUDENT</h2>
+      <p>Nền tảng thương mại điện tử dành riêng cho sinh viên Trường Đại học Hùng Vương TP.HCM. Mua bán an toàn, tìm gia sư, kết nối cộng đồng sinh viên.</p>
+      <div class="fsc"><div class="fsb">📘</div><div class="fsb">📷</div><div class="fsb">📹</div><div class="fsb">💬</div></div>
+    </div>
+    <div class="fcol"><h4>Về chúng tôi</h4><a href="#">Giới thiệu DHV E-STUDENT</a><a href="#">Điều khoản sử dụng</a><a href="#">Chính sách bảo mật</a><a href="#">Hỗ trợ sinh viên</a></div>
+    <div class="fcol"><h4>Danh mục</h4><a href="#" onclick="navigate('products',{pcat:'fashion'});return false">Thời trang</a><a href="#" onclick="navigate('products',{pcat:'electronics'});return false">Điện tử</a><a href="#" onclick="navigate('products',{pcat:'handmade'});return false">Handmade</a><a href="#" onclick="navigate('products',{pcat:'housing'});return false">Tìm trọ</a><a href="#" onclick="navigate('tutors');return false">Gia sư</a></div>
+    <div class="fcol"><h4>Liên hệ</h4><a href="#">📍 37 Kinh Dương Vương, Q.6, TP.HCM</a><a href="#">📞 (028) 3754 1230</a><a href="#">✉️ dhvestudent@dhv.edu.vn</a><a href="#">🕐 T2–T6: 8:00–17:00</a></div>
+  </div>
+  <div class="fbot"><div>© 2025 <em>DHV E-STUDENT</em> · Trường ĐH Hùng Vương TP.HCM</div><div>Đề tài NCKH – <em>Nguyễn Thị Hải Anh</em></div></div>
+</div>
+</footer>
+
+
+
+<script>
+// ============================================================================
+// data.js — Toàn bộ dữ liệu mẫu (danh mục, sản phẩm, gia sư, diễn đàn, việc làm)
+// Đây là nơi DUY NHẤT cần sửa khi muốn thêm/sửa/xoá dữ liệu hiển thị trên web.
+// Sau này nếu chuyển sang lấy dữ liệu thật từ MySQL qua PHP, chỉ cần thay nội
+// dung các mảng dưới đây bằng kết quả gọi API PHP (fetch), các file khác
+// (render giao diện, tìm kiếm, giỏ hàng...) không cần sửa gì thêm.
+// ============================================================================
+
+const CATS = [
+  {id:'fashion',  e:'👗', n:'Thời trang', c:'342 tin', bg:'c1'},
+  {id:'electronics',e:'📱',n:'Điện tử',   c:'215 tin', bg:'c2'},
+  {id:'handmade', e:'🎨', n:'Handmade',   c:'128 tin', bg:'c3'},
+  {id:'books',    e:'📚', n:'Sách vở',    c:'89 tin',  bg:'c4'},
+  {id:'household',e:'🏠', n:'Gia dụng',   c:'156 tin', bg:'c5'},
+  {id:'vehicles', e:'🚲', n:'Xe & PT',    c:'67 tin',  bg:'c6'},
+  {id:'entertainment',e:'🎮',n:'Giải trí',c:'94 tin',  bg:'c7'},
+  {id:'cosmetics',e:'💄', n:'Mỹ phẩm',   c:'73 tin',  bg:'c8'},
+  {id:'housing',  e:'🛏️', n:'Phòng trọ', c:'52 tin',  bg:'c9'},
+];
+
+const PRODUCTS = [
+  {id:1, n:'Áo hoodie oversize vintage unisex form rộng', p:85000, op:150000, cat:'fashion', cond:'secondhand', e:'👕', bg:'p1', seller:'Hải Anh', loc:'Q.6', desc:'Áo hoodie form oversize size M-L phù hợp cả nam lẫn nữ. Chất nỉ dày, giữ ấm tốt. Đã giặt sạch, không phai màu.'},
+  {id:2, n:'iPhone 11 64GB còn BH, full phụ kiện chính hãng', p:4500000, op:5200000, cat:'electronics', cond:'used', e:'📱', bg:'p2', seller:'Minh Tuấn', loc:'KTX', desc:'iPhone 11 màu đen, pin còn 88%, kèm sạc cáp zin, tai nghe, hộp đựng. Còn bảo hành đến tháng 3/2025.'},
+  {id:3, n:'Tranh vẽ tay handmade tặng sinh nhật người thân', p:120000, op:null, cat:'handmade', cond:'new', e:'🎨', bg:'p3', seller:'Bảo Ngân', loc:'Q.6', desc:'Tranh màu nước vẽ tay theo yêu cầu. Chân dung hoặc phong cảnh. Kích thước A4. Giao trong 3-5 ngày.'},
+  {id:4, n:'Giáo trình Cơ sở dữ liệu + Lập trình Web DHV', p:35000, op:80000, cat:'books', cond:'used', e:'📚', bg:'p4', seller:'Thu Hà', loc:'Trường', desc:'Bộ 2 cuốn giáo trình môn CSDL và Lập trình Web dùng tại DHV. Còn ghi chú đầy đủ, có highlight.'},
+  {id:5, n:'Laptop Dell Inspiron Core i5 SSD 256GB pin 5h', p:7800000, op:10000000, cat:'electronics', cond:'used', e:'💻', bg:'p5', seller:'Quang Đức', loc:'Q.6', desc:'Dell Inspiron 15 3000, i5 gen 10, RAM 8GB, SSD 256GB. Win 11 bản quyền. Máy đẹp không trầy xước.'},
+  {id:6, n:'Máy ép trái cây mini để bàn ký túc xá', p:180000, op:250000, cat:'household', cond:'new', e:'🧃', bg:'p6', seller:'Lan Anh', loc:'KTX', desc:'Máy ép chậm mini 200W, đầu USB, dễ vệ sinh. Phù hợp để bàn KTX. Còn nguyên hộp chưa dùng.'},
+  {id:7, n:'Giày Converse Chuck Taylor size 39 còn mới 95%', p:320000, op:650000, cat:'fashion', cond:'secondhand', e:'👟', bg:'p1', seller:'Thanh Bình', loc:'Q.6', desc:'Converse Classic màu trắng size 39. Mang 3 lần, giặt sạch. Không có vết ố. Kèm hộp.'},
+  {id:8, n:'Màn hình LCD 22 inch Samsung Full HD chân đế rời', p:1200000, op:1800000, cat:'electronics', cond:'used', e:'🖥️', bg:'p7', seller:'Văn Khoa', loc:'Bình Chánh', desc:'Samsung LS22R350. Full HD 1080p, 75Hz. Không pixel lỗi. Có HDMI + VGA. Chân đế tháo rời được.'},
+  {id:9, n:'Nến thơm handmade hương hoa cỏ tự nhiên 200g', p:95000, op:null, cat:'handmade', cond:'new', e:'🕯️', bg:'p3', seller:'Mỹ Hoa', loc:'Q.6', desc:'Nến đậu nành tự nhiên, mùi lavender + lemon grass. Cháy 30-40 tiếng. Có thể đặt theo mùi yêu thích.'},
+  {id:10, n:'Đàn guitar acoustic gỗ thông còn tốt, có bao', p:900000, op:1500000, cat:'entertainment', cond:'used', e:'🎸', bg:'p4', seller:'Hoàng Nam', loc:'Q.6', desc:'Guitar acoustic size 41, gỗ thông nguyên tấm. Dây mới thay. Kèm bao da và capo. Âm thanh tốt.'},
+  {id:11, n:'Xe đạp thể thao 21 tốc độ màu đen rất đẹp', p:2200000, op:3500000, cat:'vehicles', cond:'used', e:'🚲', bg:'p6', seller:'Duy Phong', loc:'Q.6', desc:'Xe đạp MTB 26 inch, 21 tốc độ Shimano. Khung nhôm nhẹ. Phanh đĩa trước sau. Còn tốt, đi được ngay.'},
+  {id:12, n:'Set mỹ phẩm dưỡng da Innisfree Green Tea', p:250000, op:400000, cat:'cosmetics', cond:'new', e:'💄', bg:'p8', seller:'Ngọc Mai', loc:'Q.6', desc:'Set 3 món: sữa rửa mặt + nước hoa hồng + kem dưỡng. Còn hạn dùng 2026. Mua về không hợp da.'},
+  {id:13, n:'Áo dài trắng học sinh size M còn mới tinh', p:150000, op:300000, cat:'fashion', cond:'secondhand', e:'👘', bg:'p5', seller:'Phương Thảo', loc:'Q.6', desc:'Áo dài trắng vải lụa size M. Mặc 2 lần dịp lễ. Giặt khô, không nhăn. Có quần trắng đi kèm.'},
+  {id:14, n:'Quạt tích điện mini để bàn sạc USB cổng Type-C', p:120000, op:180000, cat:'household', cond:'new', e:'🌀', bg:'p7', seller:'Gia Huy', loc:'KTX', desc:'Quạt Xiaomi mini 3 cấp gió. Sạc Type-C, pin dùng 8 tiếng. Nhỏ gọn để bàn học rất tiện.'},
+  {id:15, n:'Sách Lập trình Python từ cơ bản đến nâng cao', p:45000, op:90000, cat:'books', cond:'used', e:'📖', bg:'p4', seller:'Minh Khoa', loc:'Trường', desc:'Sách "Python for Everybody" bản dịch tiếng Việt. Có bài tập thực hành. Còn ghi chú tay ở nhiều chỗ.'},
+  {id:16, n:'Tai nghe Sony WH-1000XM4 chống ồn chủ động', p:3500000, op:5500000, cat:'electronics', cond:'used', e:'🎧', bg:'p2', seller:'Anh Tuấn', loc:'Q.6', desc:'Sony WH-1000XM4 màu đen. Pin còn 80%, chống ồn vẫn rất tốt. Kèm túi đựng + cáp sạc. Có thể test.'},
+  {id:17, n:'Phòng trọ 25m² full nội thất, gần DHV 5 phút đi bộ', p:2500000, op:null, cat:'housing', cond:'available', e:'🏠', bg:'p1', seller:'Chủ Phước', loc:'Q.6', desc:'Phòng riêng có máy lạnh, giường, tủ, kệ bếp, WC riêng. Giờ giấc tự do, an ninh tốt. Giá đã gồm internet, chưa gồm điện nước (điện 3.500đ/kWh, nước 80k/người).'},
+  {id:18, n:'Phòng ghép 2 nữ, có máy lạnh, an ninh khu vực tốt', p:950000, op:null, cat:'housing', cond:'available', e:'🛏️', bg:'p6', seller:'Nhóm SV K20', loc:'Q.6', desc:'Phòng ghép tối đa 2 người, máy lạnh riêng, WC chung (4 phòng/1 WC). Quản lý thân thiện, có camera an ninh. Phù hợp sinh viên năm 1-2.'},
+  {id:19, n:'Căn hộ mini 1 phòng ngủ đầy đủ tiện nghi, có ban công', p:3800000, op:null, cat:'housing', cond:'available', e:'🏢', bg:'p7', seller:'Cô Hạnh (BQL chung cư)', loc:'Bình Thạnh', desc:'Bếp riêng, WC riêng, ban công thoáng. Có thang máy, bảo vệ 24/7. Khu vực yên tĩnh, sạch sẽ, gần chợ và trạm xe buýt.'},
+  {id:20, n:'Phòng trọ nam 20m², gần chợ Bình Tây, giá sinh viên', p:1800000, op:null, cat:'housing', cond:'available', e:'🔑', bg:'p4', seller:'Chủ Khải', loc:'Q.5', desc:'Dành cho nam sinh viên, WC chung, khu để xe riêng. Gần chợ Bình Tây và bến xe buýt tới DHV. Đã có sẵn giường tủ, chỉ cần dọn vào ở.'},
+];
+
+const TUTORS = [
+  {id:1, name:'Nguyễn Hải Anh', init:'HA', subjects:['Lập trình Web','CSDL','Java','PHP'], price:80000, rating:4.9, reviews:23, faculty:'Khoa KTCN', year:'K22', color:'#3B82F6', avail:'Linh hoạt các tối', area:'Q.6, KTX DHV', bio:'Sinh viên năm 3 CNTT, GPA 3.6/4.0. Có 1 năm kinh nghiệm dạy thêm lập trình. Phong cách dạy thực hành, giải thích bằng ví dụ thực tế.'},
+  {id:2, name:'Lê Minh Tuấn', init:'MT', subjects:['Toán cao cấp','Vật lý','Giải tích','Đại số'], price:70000, rating:4.8, reviews:15, faculty:'Khoa KHTN', year:'K21', color:'#10B981', avail:'T2-T6 chiều', area:'Q.6, Q.8, Online', bio:'Sinh viên năm 4 Toán-Tin. Chuyên ôn thi đại cương cho SV năm 1-2. Kiên nhẫn, giải thích từng bước rõ ràng.'},
+  {id:3, name:'Trần Bảo Ngân', init:'BN', subjects:['Kế toán','Tài chính','Kinh tế vi mô','Excel'], price:65000, rating:4.7, reviews:31, faculty:'Khoa KT', year:'K21', color:'#F59E0B', avail:'Cuối tuần', area:'Q.6, Q.11, Online', bio:'SV năm 4 Kế toán. Đã dạy cho 30+ sinh viên. Có tài liệu đề cương đầy đủ các môn KT.'},
+  {id:4, name:'Phạm Quang Đức', init:'QD', subjects:['Thiết kế đồ họa','UI/UX','Figma','Photoshop'], price:90000, rating:5.0, reviews:8, faculty:'Khoa KTCN', year:'K22', color:'#8B5CF6', avail:'Tối T4, T6, T7', area:'Online, Q.6', bio:'Freelance designer, có portfolio thực tế. Dạy từ zero đến biết làm project. Hỗ trợ sau giờ học.'},
+  {id:5, name:'Nguyễn Văn Khoa', init:'VK', subjects:['C/C++','Cấu trúc dữ liệu','Giải thuật','Python'], price:75000, rating:4.6, reviews:19, faculty:'Khoa KTCN', year:'K21', color:'#EF4444', avail:'T3, T5, T7 tối', area:'KTX, Q.6', bio:'SV năm 4 CNTT, giỏi lập trình, từng tham gia ACM ICPC. Dạy thực hành coding nhiều.'},
+  {id:6, name:'Phùng Lan Anh', init:'LA', subjects:['Tiếng Anh','TOEIC','Giao tiếp','IELTS cơ bản'], price:60000, rating:4.9, reviews:42, faculty:'Khoa NN', year:'K20', color:'#06B6D4', avail:'Linh hoạt, Online', area:'Online, Q.6, Q.5', bio:'TOEIC 850. Đã dạy cho 50+ học sinh. Rất kiên nhẫn. Có phương pháp học TOEIC tăng 200 điểm.'},
+  {id:7, name:'Hoàng Duy Phong', init:'DP', subjects:['Marketing','Quản trị KD','Excel','PowerPoint'], price:55000, rating:4.5, reviews:12, faculty:'Khoa KT', year:'K22', color:'#84CC16', avail:'T7, CN, Online', area:'Q.6, Q.5', bio:'SV Marketing năm 3. Đang thực tập tại agency lớn. Dạy thực hành, nhiều case study thực tế.'},
+  {id:8, name:'Mai Thị Ngọc', init:'TN', subjects:['Hóa học','Sinh học','Hóa hữu cơ','Hóa phân tích'], price:65000, rating:4.7, reviews:7, faculty:'Khoa SP', year:'K21', color:'#F97316', avail:'T2-T6 sáng, Online', area:'Q.6, Online', bio:'SV Sư phạm Hóa năm 4. Phong cách dạy dễ hiểu, sử dụng nhiều hình ảnh minh họa. Có tài liệu ôn thi tốt.'},
+];
+
+const TUTOR_SUBJECTS = ['Tất cả','Lập trình','Toán','Tiếng Anh','Kế toán','Thiết kế','Hóa học','Marketing'];
+
+const FORUM = [
+  {id:1, author:'Hải Anh', init:'HA', faculty:'K22CNTT', time:'2 giờ trước', cat:'Học tập', title:'Ôn thi cuối kỳ môn CSDL – Ai cùng học nhóm không?', prev:'Mình đang ôn thi môn Cơ sở dữ liệu, có ai muốn lập nhóm học chung không ạ? Mình có tài liệu đề cương đầy đủ do thầy cung cấp...', views:142, cmts:23, likes:45, color:'#3B82F6', hot:false},
+  {id:2, author:'Minh Tuấn', init:'MT', faculty:'K21QT', time:'5 giờ trước', cat:'Chia sẻ', title:'Review KTX DHV – Giá cả, tiện nghi, kinh nghiệm 2 năm ở', prev:'Mình ở KTX DHV được 2 năm, chia sẻ cho các bạn năm nhất về phòng ốc, an ninh, điện nước và cách sắp xếp cuộc sống...', views:389, cmts:51, likes:112, color:'#10B981', hot:false},
+  {id:3, author:'Bảo Ngân', init:'BN', faculty:'K23KT', time:'Hôm qua', cat:'Hỏi đáp', title:'Đăng ký học phần bị lỗi hệ thống – có giải pháp không?', prev:'Mình vào đăng ký học phần bị báo lỗi "Không đủ điều kiện", nhưng điểm và học phí đều ổn. Nhờ mọi người tư vấn...', views:201, cmts:34, likes:28, color:'#F59E0B', hot:false},
+  {id:4, author:'Quang Đức', init:'QD', faculty:'K22TKDH', time:'Hôm qua', cat:'Chia sẻ', title:'Phòng trọ gần DHV giá rẻ – tổng hợp địa chỉ tin cậy Q.6', prev:'Mình tổng hợp danh sách phòng trọ giá từ 1.2–2 triệu/tháng gần trường, chủ nhà tốt, không giờ giấc...', views:567, cmts:89, likes:234, color:'#EF4444', hot:true},
+  {id:5, author:'Lan Anh', init:'LA', faculty:'K23NN', time:'2 ngày trước', cat:'Học tập', title:'Tài liệu ôn thi TOEIC từ 500→700 điểm – chia sẻ miễn phí', prev:'Mình vừa thi TOEIC được 720 điểm, chia sẻ lại bộ tài liệu đã ôn trong 3 tháng với 2 buổi/tuần...', views:445, cmts:67, likes:189, color:'#06B6D4', hot:false},
+  {id:6, author:'Duy Phong', init:'DP', faculty:'K22MKT', time:'3 ngày trước', cat:'Hỏi đáp', title:'Thực tập Marketing ở đâu nhận sinh viên năm 2?', prev:'Mình đang tìm chỗ thực tập Marketing, công ty nào nhận SV năm 2 không ạ? Khu vực Q.6 hoặc Online...', views:156, cmts:29, likes:41, color:'#84CC16', hot:false},
+];
+const FORUM_CATS = ['Tất cả','Học tập','Chia sẻ','Hỏi đáp'];
+
+const JOBS = [
+  {id:1, title:'Nhân viên pha chế / phục vụ cuối tuần', co:'The Coffee House – Nguyễn Văn Linh, Q.6', type:'Part-time', pay:'25.000đ/giờ', loc:'Gần trường', logo:'☕', urgent:true},
+  {id:2, title:'Nhân viên bán hàng điện máy cuối tuần', co:'Thegioididong – Chợ Bình Tây, Q.6', type:'Cuối tuần', pay:'3.000.000đ/tháng', loc:'Q.6', logo:'🏪', urgent:false},
+  {id:3, title:'Thực tập sinh IT – Lập trình Web/App', co:'FPT Software – TP. Thủ Đức', type:'Thực tập', pay:'3-5tr/tháng', loc:'Q. Thủ Đức', logo:'💻', urgent:true},
+  {id:4, title:'Shipper giao hàng linh hoạt theo giờ', co:'Grab Vietnam – Toàn TP.HCM', type:'Tự do', pay:'Thu nhập linh hoạt', loc:'Toàn TP', logo:'📦', urgent:false},
+  {id:5, title:'Nhân viên Marketing Online – làm remote', co:'Startup TechViet – Online', type:'Part-time', pay:'4.000.000đ/tháng', loc:'Online', logo:'📣', urgent:true},
+  {id:6, title:'Nhân viên kho hàng Shopee Express', co:'Shopee Express – Bình Chánh', type:'Part-time', pay:'22.000đ/giờ', loc:'Bình Chánh', logo:'🚀', urgent:false},
+  {id:7, title:'Gia sư dạy kèm tại nhà – nhiều môn', co:'Trung tâm gia sư DHV Network', type:'Part-time', pay:'60-100k/giờ', loc:'Q.6, Q.8, Online', logo:'📝', urgent:false},
+  {id:8, title:'Nhân viên phục vụ nhà hàng Buffet', co:'King BBQ – Quận 6, TP.HCM', type:'Part-time', pay:'26.000đ/giờ', loc:'Q.6', logo:'🍖', urgent:true},
+];
+const JOB_TYPES = ['Tất cả','Part-time','Thực tập','Tự do','Cuối tuần'];
+
+// ── SEED: HỘP THƯ (chat với người bán) ──────────────────────────────────────
+// Mảng này KHÔNG dùng const vì sẽ có thêm cuộc chat mới được tạo trong lúc dùng web.
+let CHATS = [
+  {id:1, sellerName:'Minh Khoa', sellerInit:'MK', sellerColor:'#2563EB', productName:'Áo Hoodie DHV phiên bản giới hạn', messages:[
+    {from:'them', text:'Chào bạn, áo hoodie mình còn size M và L nha!', time:'14:02'},
+    {from:'me',   text:'Cho mình lấy 1 cái size M nha, khi nào lấy được vậy bạn?', time:'14:05'},
+    {from:'them', text:'Mình rep buổi sáng nha, chiều nay 5h ra cổng DHV lấy được hôn?', time:'14:07'},
+  ]},
+  {id:2, sellerName:'Thủy Tiên', sellerInit:'TT', sellerColor:'#7C3AED', productName:'Vòng tay macrame tự chọn màu', messages:[
+    {from:'them', text:'Dạ chào bạn, bạn muốn đặt màu gì ạ?', time:'09:15'},
+    {from:'me',   text:'Mình lấy màu pastel xanh với hồng nha', time:'09:20'},
+    {from:'them', text:'Ok bạn, khoảng 3 ngày nữa là xong nha, mình ship qua GHTK được hôn?', time:'09:22'},
+    {from:'me',   text:'Dạ được bạn ơi', time:'09:24'},
+  ]},
+  {id:3, sellerName:'Chủ Phước', sellerInit:'CP', sellerColor:'#16A34A', productName:'Phòng trọ 25m² full nội thất', messages:[
+    {from:'them', text:'Chào em, phòng còn trống nha, em ở mấy người?', time:'19:40'},
+    {from:'me',   text:'Dạ em ở 1 mình anh, em coi phòng được không ạ?', time:'19:42'},
+  ]},
+];
+let chatAutoId = 4; // id cấp cho cuộc chat mới được tạo lúc dùng web
+
+// ── SEED: THÔNG BÁO ──────────────────────────────────────────────────────────
+const NOTIFICATIONS = [
+  {e:'💬', text:'Minh Khoa vừa trả lời tin nhắn của bạn', time:'5 phút trước'},
+  {e:'❤️', text:'Có người vừa thích tin "iPhone 12 64GB" của bạn', time:'1 giờ trước'},
+  {e:'📣', text:'Trung tâm gia sư DHV vừa đăng 1 việc làm mới phù hợp với bạn', time:'3 giờ trước'},
+  {e:'🏠', text:'Phòng trọ bạn quan tâm ở Q.6 vừa giảm giá', time:'1 ngày trước'},
+  {e:'💬', text:'Chủ Phước vừa gửi tin nhắn cho bạn', time:'2 ngày trước'},
+];
+
+// ============================================================================
+// state.js — "Bộ nhớ" chung của toàn bộ web (trang hiện tại, giỏ hàng, các bộ
+// lọc/tìm kiếm đang chọn...). Mọi file khác đọc/ghi vào object S này để biết
+// và cập nhật trạng thái hiện tại của người dùng.
+// ============================================================================
+
+const S = {
+  page: 'home',
+  cart: [],
+  wishlist: new Set(),
+  pcat: 'all', pcond: 'all', psort: 'newest', psearch: '',
+  tsubject: 'all', tprice: 0, tsort: 'rating', tsearch: '',
+  fcat: 'all', fsearch: '',
+  jtype: 'all', jsearch: '',
+  user: null,        // null = chưa đăng nhập, hoặc {name,email,mssv,init,color}
+  myListingIds: [],  // id các tin do người dùng hiện tại tự đăng trong phiên này
+  activeChatId: null,// id cuộc chat đang mở trong khung chat (null = đang ở màn hộp thư)
+};
+// ============================================================================
+// utils.js — Các hàm tiện ích nhỏ, dùng lại ở nhiều nơi: định dạng giá tiền,
+// vẽ sao đánh giá, in nhãn tình trạng sản phẩm, và hiển thị thông báo nổi
+// (toast) ở cuối màn hình.
+// ============================================================================
+
+function condLabel(c){ return c==='new'?'<span class="cnd new">Mới</span>':c==='used'?'<span class="cnd used">Đã dùng</span>':c==='available'?'<span class="cnd new">Còn phòng</span>':'<span class="cnd sh2">Second-hand</span>'; }
+function priceStr(p){ return p.toLocaleString('vi-VN')+'đ'; }
+function stars(r){ const full=Math.floor(r),half=r-full>=0.5; let s=''; for(let i=0;i<5;i++) s+=i<full?'★':(i===full&&half?'½':'☆'); return s; }
+
+// ── TOAST: thông báo nổi nhỏ ở dưới màn hình ────────────────────────────────
+let toastTimer;
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3000); }
+// ============================================================================
+// auth.js — Đăng nhập / Đăng ký. Đây là bản DEMO (chưa nối CSDL thật) nên:
+//  • Đăng ký: phải dùng email đuôi @dhv.edu.vn, mật khẩu ≥ 6 ký tự và khớp ô
+//    xác nhận.
+//  • Đăng nhập: chỉ cần email đúng đuôi @dhv.edu.vn là vào được, KHÔNG kiểm
+//    tra mật khẩu (mật khẩu nhập gì cũng được, chỉ cần không để trống) — vì
+//    chưa có server lưu mật khẩu thật để so khớp.
+// requireLogin() được các file khác (account.js, chat.js, notifications.js,
+// post-listing.js, pages/forum.js) gọi để chặn tính năng cần đăng nhập.
+// ============================================================================
+
+const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@dhv\.edu\.vn$/i;
+const AVATAR_COLORS = ['#2563EB','#7C3AED','#16A34A','#DB2777','#EA580C','#0891B2'];
+
+function colorFromString(s){
+  let h=0; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+function initialsFrom(name){
+  const parts = name.trim().split(/\s+/);
+  return ((parts[0]?.[0]||'D')+(parts[parts.length-1]?.[0]||'')).toUpperCase();
+}
+function deriveNameFromEmail(email){
+  const local = email.split('@')[0].replace(/[._]+/g,' ').trim();
+  return local.replace(/\b\w/g, c=>c.toUpperCase()) || 'Sinh viên DHV';
+}
+function showFormError(id, msg){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.remove('hide');
+}
+
+function openLoginModal(){
+  document.getElementById('modal-box').innerHTML = `
+    <div class="mh"><div class="mtitle">Đăng nhập</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="frow"><label class="flabel">Email sinh viên</label><input class="finput" id="li-email" type="text" placeholder="vd: 20dh123456@dhv.edu.vn"></div>
+      <div class="frow"><label class="flabel">Mật khẩu</label><input class="finput" id="li-pass" type="password" placeholder="Nhập mật khẩu" onkeydown="if(event.key==='Enter')submitLogin()"></div>
+      <div class="ferr hide" id="li-err"></div>
+      <button class="fbtn-primary" onclick="submitLogin()">Đăng nhập</button>
+      <div class="fswitch">Chưa có tài khoản? <a href="#" onclick="openRegisterModal();return false">Đăng ký ngay</a></div>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+
+function openRegisterModal(){
+  document.getElementById('modal-box').innerHTML = `
+    <div class="mh"><div class="mtitle">Đăng ký tài khoản</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="frow"><label class="flabel">Họ và tên</label><input class="finput" id="rg-name" type="text" placeholder="Nguyễn Văn A"></div>
+      <div class="frow"><label class="flabel">Email sinh viên (đuôi @dhv.edu.vn)</label><input class="finput" id="rg-email" type="text" placeholder="vd: 20dh123456@dhv.edu.vn"></div>
+      <div class="frow"><label class="flabel">Mã số sinh viên (không bắt buộc)</label><input class="finput" id="rg-mssv" type="text" placeholder="VD: DH20CNTT001"></div>
+      <div class="frow"><label class="flabel">Mật khẩu</label><input class="finput" id="rg-pass" type="password" placeholder="Tối thiểu 6 ký tự"></div>
+      <div class="frow"><label class="flabel">Xác nhận mật khẩu</label><input class="finput" id="rg-pass2" type="password" placeholder="Nhập lại mật khẩu" onkeydown="if(event.key==='Enter')submitRegister()"></div>
+      <div class="ferr hide" id="rg-err"></div>
+      <button class="fbtn-primary" onclick="submitRegister()">Đăng ký</button>
+      <div class="fswitch">Đã có tài khoản? <a href="#" onclick="openLoginModal();return false">Đăng nhập</a></div>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+
+function submitLogin(){
+  const email = document.getElementById('li-email').value.trim();
+  const pass = document.getElementById('li-pass').value;
+  if(!EMAIL_RE.test(email)){ showFormError('li-err','Email phải có đuôi @dhv.edu.vn (email sinh viên DHV) bạn nha!'); return; }
+  if(!pass){ showFormError('li-err','Bạn nhập mật khẩu vào nha (demo nên mật khẩu gì cũng được, chỉ cần không để trống 😄)'); return; }
+  const name = deriveNameFromEmail(email);
+  S.user = {name, email, mssv:'', init:initialsFrom(name), color:colorFromString(email)};
+  closeModal();
+  updateAuthUI();
+  showToast(`Chào mừng trở lại, ${name}! 👋`);
+}
+
+function submitRegister(){
+  const name = document.getElementById('rg-name').value.trim();
+  const email = document.getElementById('rg-email').value.trim();
+  const mssv = document.getElementById('rg-mssv').value.trim();
+  const pass = document.getElementById('rg-pass').value;
+  const pass2 = document.getElementById('rg-pass2').value;
+  if(!name){ showFormError('rg-err','Bạn nhập họ tên giúp mình nha!'); return; }
+  if(!EMAIL_RE.test(email)){ showFormError('rg-err','Email phải có đuôi @dhv.edu.vn (email sinh viên DHV) bạn nha!'); return; }
+  if(pass.length<6){ showFormError('rg-err','Mật khẩu cần ít nhất 6 ký tự nha!'); return; }
+  if(pass!==pass2){ showFormError('rg-err','2 ô mật khẩu chưa khớp nhau bạn ơi!'); return; }
+  S.user = {name, email, mssv, init:initialsFrom(name), color:colorFromString(email)};
+  closeModal();
+  updateAuthUI();
+  showToast(`Đăng ký thành công! Chào mừng ${name} đến với DHV E-STUDENT 🎉`);
+}
+
+function logout(){
+  S.user = null;
+  S.myListingIds = [];
+  closeModal();
+  updateAuthUI();
+  showToast('Bạn đã đăng xuất. Hẹn gặp lại! 👋');
+}
+
+// Gọi ở đầu các hàm cần đăng nhập. Trả về false + tự mở khung đăng nhập nếu
+// chưa đăng nhập, để nơi gọi chỉ cần `if(!requireLogin('...')) return;`
+function requireLogin(actionLabel){
+  if(S.user) return true;
+  showToast(`Bạn cần đăng nhập để ${actionLabel} nha!`);
+  openLoginModal();
+  return false;
+}
+
+// Ẩn/hiện đúng phần header tương ứng với trạng thái đăng nhập, và đổi avatar.
+function updateAuthUI(){
+  document.querySelectorAll('.auth-guest').forEach(el=>el.classList.toggle('hide', !!S.user));
+  document.querySelectorAll('.auth-user').forEach(el=>el.classList.toggle('hide', !S.user));
+  const avt = document.getElementById('user-avatar-btn');
+  if(avt && S.user){ avt.textContent = S.user.init; avt.style.background = S.user.color; }
+}
+// ============================================================================
+// account.js — Xem thông tin tài khoản đã đăng nhập (yêu cầu đăng nhập).
+// ============================================================================
+function openAccountModal(){
+  if(!requireLogin('xem thông tin tài khoản')) return;
+  document.getElementById('modal-box').innerHTML = `
+    <div class="mh"><div class="mtitle">Thông tin tài khoản</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="acc-head">
+        <div class="acc-avt" style="background:${S.user.color}">${S.user.init}</div>
+        <div><div class="acc-name">${S.user.name}</div><div class="acc-email">${S.user.email}</div></div>
+      </div>
+      <div class="acc-row"><span>Mã số sinh viên</span><b>${S.user.mssv || 'Chưa cập nhật'}</b></div>
+      <div class="acc-row"><span>Tin đã đăng trong phiên này</span><b>${S.myListingIds.length} tin</b></div>
+      <div class="acc-row"><span>Trạng thái xác thực</span><b style="color:#16A34A">Email DHV hợp lệ ✓</b></div>
+      <button class="fbtn-primary" onclick="closeModal();openPostListingModal()">📝 Đăng tin mới</button>
+      <button class="fbtn-outline" onclick="logout()">Đăng xuất</button>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+// ============================================================================
+// cards.js — Các hàm tạo HTML cho từng "thẻ" (card) hiển thị: thẻ sản phẩm,
+// thẻ gia sư, thẻ bài diễn đàn, thẻ việc làm. Mỗi hàm nhận 1 object dữ liệu
+// và trả về đoạn HTML tương ứng để chèn vào trang.
+// ============================================================================
+
+function productCard(p, showAdd=true){
+  const liked = S.wishlist.has(p.id);
+  return `<div class="pcard" onclick="openProductModal(${p.id})">
+    <div class="pimg ${p.bg}">${p.e}${condLabel(p.cond)}<button class="wl${liked?' liked':''}" data-id="${p.id}" onclick="event.stopPropagation();toggleWishlist(${p.id},this)">♥</button></div>
+    <div class="pinf">
+      <div class="pn">${p.n}</div>
+      <div class="pp">${priceStr(p.p)}${p.op?` <s>${priceStr(p.op)}</s>`:''}</div>
+      <div class="pm"><span>👤 ${p.seller}</span><span>📍 ${p.loc}</span></div>
+    </div>
+    ${showAdd?`<button class="padd" onclick="event.stopPropagation();addToCart(${p.id})">🛒 Thêm vào giỏ</button>`:''}
+  </div>`;
+}
+
+function tutorCard(t){
+  return `<div class="tcard" onclick="openTutorModal(${t.id})">
+    <div class="tav" style="background:linear-gradient(135deg,${t.color},${t.color}99)">${t.init}</div>
+    <div class="tn2">${t.name}</div>
+    <div class="ts2">${t.faculty} · ${t.year}</div>
+    <div class="tsubj">${t.subjects.slice(0,3).map(s=>`<span class="tsj">${s}</span>`).join('')}${t.subjects.length>3?`<span class="tsj">+${t.subjects.length-3}</span>`:''}</div>
+    <div class="trat"><span class="stars" style="color:#F59E0B">${stars(t.rating)}</span><span class="rn">${t.rating} (${t.reviews})</span></div>
+    <div class="tprc">${priceStr(t.price)}<span>/giờ</span></div>
+    <div class="tchp">📍 ${t.area}</div>
+    <button class="cbtn2" onclick="event.stopPropagation();showToast('Đã gửi yêu cầu kết nối đến ${t.name}! 🎉')">📩 Liên hệ ngay</button>
+  </div>`;
+}
+
+function forumCard(f){
+  const cats={'Học tập':'','Chia sẻ':'chia','Hỏi đáp':'hoi'};
+  const hotTag = f.hot?'<span style="background:#FFE4E6;color:#DC2626;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;margin-left:6px">🔥 Hot</span>':'';
+  return `<div class="fcard" onclick="showToast('Tính năng xem bài viết sẽ sớm ra mắt!')">
+    <div class="fh">
+      <div class="fav3" style="background:linear-gradient(135deg,${f.color},${f.color}aa)">${f.init}</div>
+      <div style="flex:1"><div class="fu">${f.author} · ${f.faculty}</div><div class="ft3">${f.time}</div></div>
+      <span class="fcat ${cats[f.cat]||''}">${f.cat}</span>${hotTag}
+    </div>
+    <div class="ftit">${f.title}</div>
+    <div class="fprev">${f.prev}</div>
+    <div class="fst3"><span>👁️ ${f.views} xem</span><span>💬 ${f.cmts} bình luận</span><span>❤️ ${f.likes} thích</span></div>
+  </div>`;
+}
+
+function jobCard(j){
+  return `<div class="jcard">
+    <div class="jlg">${j.logo}</div>
+    <div class="ji">
+      <div class="jt">${j.title}${j.urgent?'<span style="background:#FEF3C7;color:#D97706;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;margin-left:8px">⚡ Gấp</span>':''}</div>
+      <div class="jc">${j.co}</div>
+      <div class="jtags">
+        <span class="jt2 tp">${j.type}</span>
+        <span class="jt2 ty">💰 ${j.pay}</span>
+        <span class="jt2 tg">📍 ${j.loc}</span>
+      </div>
+    </div>
+    <button class="apbtn" onclick="showToast('Đã lưu tin tuyển dụng! 💼')">Ứng tuyển</button>
+  </div>`;
+}
+// ============================================================================
+// wishlist.js — Bật/tắt "yêu thích" (♥) cho một sản phẩm.
+// ============================================================================
+function toggleWishlist(id, btn){
+  if(S.wishlist.has(id)){ S.wishlist.delete(id); btn.classList.remove('liked'); showToast('Đã bỏ khỏi yêu thích'); }
+  else { S.wishlist.add(id); btn.classList.add('liked'); showToast('Đã thêm vào yêu thích ♥'); }
+}
+// ============================================================================
+// pages/home.js — Render trang chủ: lưới danh mục, sản phẩm secondhand nổi
+// bật, gia sư nổi bật.
+// ============================================================================
+
+function renderHome(){
+  // Categories
+  document.getElementById('home-cats').innerHTML = CATS.map(c=>`
+    <div class="cat ${c.bg}" onclick="navigate('products',{pcat:'${c.id}'})">
+      <div class="ce">${c.e}</div><div class="cn">${c.n}</div><div class="cc">${c.c}</div>
+    </div>`).join('');
+  // Products (secondhand/used only, first 5)
+  const p5 = PRODUCTS.filter(p=>p.cond!=='new').slice(0,5);
+  document.getElementById('home-products').innerHTML = p5.map(p=>productCard(p,false)).join('');
+  // Tutors (first 4)
+  document.getElementById('home-tutors').innerHTML = TUTORS.slice(0,4).map(t=>tutorCard(t)).join('');
+}
+// ============================================================================
+// pages/products.js — Render trang "Mua & Bán": danh sách danh mục (pills),
+// lọc theo danh mục/tình trạng/giá, tìm kiếm, sắp xếp.
+// ============================================================================
+
+function renderProducts(){
+  const catLabels = {all:'Tất cả',fashion:'👗 Thời trang',electronics:'📱 Điện tử',handmade:'🎨 Handmade',books:'📚 Sách vở',household:'🏠 Gia dụng',vehicles:'🚲 Xe & PT',entertainment:'🎮 Giải trí',cosmetics:'💄 Mỹ phẩm',housing:'🛏️ Phòng trọ'};
+  const allCats = ['all',...CATS.map(c=>c.id)];
+  document.getElementById('cat-pills').innerHTML = allCats.map(c=>`
+    <button class="pill${S.pcat===c?' act':''}" data-cat="${c}" onclick="setPCat('${c}')">${catLabels[c]}</button>`).join('');
+  const titleMap = {all:'🛍️ Mua & Bán',fashion:'👗 Thời trang',electronics:'📱 Điện tử',handmade:'🎨 Handmade',books:'📚 Sách vở',household:'🏠 Gia dụng',vehicles:'🚲 Xe & PT',entertainment:'🎮 Giải trí',cosmetics:'💄 Mỹ phẩm',housing:'🛏️ Phòng trọ'};
+  document.getElementById('products-title').textContent = titleMap[S.pcat]||'🛍️ Mua & Bán';
+  filterProducts();
+}
+
+function filterProducts(){
+  S.psearch = (document.getElementById('psearch')?.value||'').toLowerCase();
+  S.pcond = document.getElementById('pcond')?.value||'all';
+  S.psort = document.getElementById('psort')?.value||'newest';
+  let list = [...PRODUCTS];
+  if(S.pcat!=='all') list=list.filter(p=>p.cat===S.pcat);
+  if(S.pcond!=='all') list=list.filter(p=>p.cond===S.pcond);
+  if(S.psearch) list=list.filter(p=>p.n.toLowerCase().includes(S.psearch)||p.seller.toLowerCase().includes(S.psearch));
+  if(S.psort==='price-asc') list.sort((a,b)=>a.p-b.p);
+  else if(S.psort==='price-desc') list.sort((a,b)=>b.p-a.p);
+  else list.reverse();
+  document.getElementById('product-count').textContent = `Tìm thấy ${list.length} sản phẩm`;
+  const grid = document.getElementById('products-grid');
+  if(!list.length){
+    grid.innerHTML=`<div class="nores" style="grid-column:1/-1"><div class="nores-i">🔍</div><p>Không tìm thấy sản phẩm phù hợp</p><p style="margin-top:8px"><a onclick="clearProductFilter()">Xóa bộ lọc</a></p></div>`;
+  } else {
+    grid.innerHTML = list.map(p=>productCard(p,true)).join('');
+    // Restore wishlist state
+    list.forEach(p=>{const btn=document.querySelector(`.wl[data-id="${p.id}"]`);if(btn&&S.wishlist.has(p.id))btn.classList.add('liked');});
+  }
+  // Update pills (so the highlighted pill always matches S.pcat, even when
+  // filterProducts() runs on its own from typing in the search box)
+  document.querySelectorAll('#cat-pills .pill').forEach(pill=>{
+    pill.classList.toggle('act', pill.dataset.cat===S.pcat);
+  });
+}
+
+function setPCat(cat){ S.pcat=cat; renderProducts(); }
+function clearProductFilter(){ S.pcat='all';S.pcond='all';S.psearch=''; document.getElementById('pcond').value='all'; document.getElementById('psearch').value=''; renderProducts(); }
+// ============================================================================
+// pages/tutors.js — Render trang "Tìm gia sư": danh sách môn học (pills),
+// lọc theo môn/giá, sắp xếp, tìm kiếm theo tên hoặc môn dạy.
+// ============================================================================
+
+function renderTutors(){
+  // Subject pills
+  document.getElementById('subj-pills').innerHTML = TUTOR_SUBJECTS.map(s=>`
+    <button class="pill${S.tsubject===s?' act':''}" onclick="setTSubj('${s}')">${s}</button>`).join('');
+  filterTutors();
+}
+
+function filterTutors(){
+  S.tsearch = (document.getElementById('tsearch')?.value||'').toLowerCase().trim();
+  S.tprice = parseInt(document.getElementById('tprice')?.value||'0');
+  S.tsort = document.getElementById('tsort')?.value||'rating';
+  let list = [...TUTORS];
+  if(S.tsearch) list=list.filter(t=>
+    t.name.toLowerCase().includes(S.tsearch)||
+    t.subjects.some(s=>s.toLowerCase().includes(S.tsearch))||
+    t.faculty.toLowerCase().includes(S.tsearch)||
+    t.bio.toLowerCase().includes(S.tsearch)
+  );
+  if(S.tsubject!=='Tất cả') list=list.filter(t=>t.subjects.some(s=>s.toLowerCase().includes(S.tsubject.toLowerCase())));
+  if(S.tprice>0) list=list.filter(t=>t.price<=S.tprice);
+  if(S.tsort==='rating') list.sort((a,b)=>b.rating-a.rating);
+  else if(S.tsort==='price-asc') list.sort((a,b)=>a.price-b.price);
+  else if(S.tsort==='price-desc') list.sort((a,b)=>b.price-a.price);
+  else if(S.tsort==='reviews') list.sort((a,b)=>b.reviews-a.reviews);
+  document.getElementById('tutor-count').textContent = `Tìm thấy ${list.length} gia sư`;
+  const grid = document.getElementById('tutors-grid');
+  if(!list.length){
+    grid.innerHTML=`<div class="nores" style="grid-column:1/-1"><div class="nores-i">📚</div><p>Không tìm thấy gia sư phù hợp</p><p style="margin-top:8px"><a onclick="clearTutorFilter()" style="color:var(--blue3);cursor:pointer;font-weight:600">Xóa bộ lọc</a></p></div>`;
+  } else {
+    grid.innerHTML = list.map(t=>tutorCard(t)).join('');
+  }
+  document.querySelectorAll('#subj-pills .pill').forEach(pill=>pill.classList.toggle('act',pill.textContent===S.tsubject));
+}
+
+function setTSubj(s){ S.tsubject=s; filterTutors(); }
+function clearTutorFilter(){ S.tsubject='Tất cả';S.tsearch='';S.tprice=0; document.getElementById('tsearch').value=''; document.getElementById('tprice').value='0'; renderTutors(); }
+// ============================================================================
+// pages/forum.js — Render trang "Diễn đàn": lọc theo chủ đề, tìm theo từ khóa.
+// ============================================================================
+
+function renderForum(){
+  document.getElementById('forum-pills').innerHTML = FORUM_CATS.map(c=>`
+    <button class="pill${S.fcat===c?' act':''}" onclick="setFCat('${c}')">${c}</button>`).join('');
+  filterForum();
+}
+function filterForum(){
+  S.fsearch = (document.getElementById('fsearch')?.value||'').toLowerCase();
+  let list = [...FORUM];
+  if(S.fcat!=='Tất cả') list=list.filter(f=>f.cat===S.fcat);
+  if(S.fsearch) list=list.filter(f=>f.title.toLowerCase().includes(S.fsearch)||f.prev.toLowerCase().includes(S.fsearch));
+  document.getElementById('forum-list').innerHTML = list.length ? list.map(f=>forumCard(f)).join('') : `<div class="nores"><div class="nores-i">💬</div><p>Không tìm thấy bài viết phù hợp</p></div>`;
+  document.querySelectorAll('#forum-pills .pill').forEach(pill=>pill.classList.toggle('act',pill.textContent===S.fcat));
+}
+function setFCat(c){ S.fcat=c; filterForum(); }
+
+// ── Đăng bài mới (yêu cầu đăng nhập) ─────────────────────────────────────────
+function openNewForumPostModal(){
+  if(!requireLogin('đăng bài lên diễn đàn')) return;
+  const catOpts = FORUM_CATS.filter(c=>c!=='Tất cả').map(c=>`<option value="${c}">${c}</option>`).join('');
+  document.getElementById('modal-box').innerHTML = `
+    <div class="mh"><div class="mtitle">✏️ Đăng bài mới</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="frow"><label class="flabel">Chủ đề</label><select class="finput" id="fp-cat">${catOpts}</select></div>
+      <div class="frow"><label class="flabel">Tiêu đề</label><input class="finput" id="fp-title" placeholder="Tiêu đề bài viết..."></div>
+      <div class="frow"><label class="flabel">Nội dung</label><textarea class="finput ftxtarea" id="fp-body" rows="4" placeholder="Bạn muốn chia sẻ gì?"></textarea></div>
+      <div class="ferr hide" id="fp-err"></div>
+      <button class="fbtn-primary" onclick="submitNewForumPost()">Đăng bài</button>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+function submitNewForumPost(){
+  const cat = document.getElementById('fp-cat').value;
+  const title = document.getElementById('fp-title').value.trim();
+  const body = document.getElementById('fp-body').value.trim();
+  if(!title){ showFormError('fp-err','Bạn nhập tiêu đề nha!'); return; }
+  if(!body){ showFormError('fp-err','Bạn viết nội dung nha!'); return; }
+  const newId = Math.max(...FORUM.map(f=>f.id), 0) + 1;
+  FORUM.unshift({id:newId, author:S.user.name, init:S.user.init, faculty:S.user.mssv||'DHV', time:'Vừa xong', cat, title, prev:body, views:0, cmts:0, likes:0, color:S.user.color, hot:false});
+  closeModal();
+  showToast('Đăng bài thành công! 🎉');
+  renderForum();
+}
+// ============================================================================
+// pages/jobs.js — Render trang "Việc làm": lọc theo loại việc, tìm theo từ khóa.
+// ============================================================================
+
+function renderJobs(){
+  document.getElementById('job-pills').innerHTML = JOB_TYPES.map(t=>`
+    <button class="pill${S.jtype===t?' act':''}" onclick="setJType('${t}')">${t}</button>`).join('');
+  filterJobs();
+}
+function filterJobs(){
+  S.jsearch = (document.getElementById('jsearch')?.value||'').toLowerCase();
+  let list = [...JOBS];
+  if(S.jtype!=='Tất cả') list=list.filter(j=>j.type===S.jtype);
+  if(S.jsearch) list=list.filter(j=>j.title.toLowerCase().includes(S.jsearch)||j.co.toLowerCase().includes(S.jsearch));
+  document.getElementById('jobs-list').innerHTML = list.length ? list.map(j=>jobCard(j)).join('') : `<div class="nores"><div class="nores-i">💼</div><p>Không tìm thấy việc làm phù hợp</p></div>`;
+  document.querySelectorAll('#job-pills .pill').forEach(pill=>pill.classList.toggle('act',pill.textContent===S.jtype));
+}
+function setJType(t){ S.jtype=t; filterJobs(); }
+// ============================================================================
+// search.js — Ô tìm kiếm tổng (trên header): gợi ý kết quả ngay khi gõ (có
+// chờ 200ms để không gọi liên tục từng phím), và chuyển sang trang kết quả
+// đầy đủ khi bấm "Xem tất cả" hoặc nhấn Enter.
+//
+// ĐÃ SỬA so với bản gốc:
+//  1) Nhấn Enter giờ sẽ nhảy thẳng tới trang kết quả đầy đủ (trước đây nhấn
+//     Enter không có tác dụng gì khác so với việc gõ bình thường).
+//  2) Khi bấm "Xem tất cả N kết quả", trang Mua & Bán giờ luôn hiện đúng cả
+//     N kết quả đó. Trước đây nếu trước khi tìm kiếm người dùng đang xem 1
+//     danh mục khác (VD: Handmade), bộ lọc danh mục cũ vẫn còn dính lại, nên
+//     có thể làm kết quả hiện ra ít hơn hoặc bằng 0 dù dropdown báo có kết quả
+//     — đây chính là lỗi "gõ tìm kiếm rồi kết quả bị mất" trong báo cáo.
+// ============================================================================
+
+let searchTimeout;
+document.getElementById('gsearch').addEventListener('input', function(){
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(()=>doGSearch(),200);
+});
+document.getElementById('gsearch').addEventListener('keydown', function(e){
+  if(e.key==='Escape') closeSearch();
+  if(e.key==='Enter'){ e.preventDefault(); doGSearch(true); }
+});
+
+function doGSearch(fullSearch=false){
+  const q = document.getElementById('gsearch').value.toLowerCase().trim();
+  if(!q){ closeSearch(); return; }
+  if(fullSearch){ globalSearchAll(q); return; } // Enter ⇒ đi thẳng tới trang kết quả đầy đủ
+  const drop = document.getElementById('sdrop');
+  const prods = PRODUCTS.filter(p=>p.n.toLowerCase().includes(q)||p.seller.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)).slice(0,4);
+  const tuts = TUTORS.filter(t=>t.name.toLowerCase().includes(q)||t.subjects.some(s=>s.toLowerCase().includes(q))).slice(0,3);
+  const fors = FORUM.filter(f=>f.title.toLowerCase().includes(q)||f.prev.toLowerCase().includes(q)).slice(0,2);
+  const jbs = JOBS.filter(j=>j.title.toLowerCase().includes(q)||j.co.toLowerCase().includes(q)).slice(0,2);
+  const total = prods.length+tuts.length+fors.length+jbs.length;
+  if(!total){ drop.innerHTML=`<div class="sempty">🔍 Không tìm thấy kết quả cho "<strong>${q}</strong>"</div>`; drop.classList.remove('hide'); return; }
+  let html='';
+  if(prods.length){ html+=`<div class="sdiv"></div><div class="sg-title">🛍️ Sản phẩm</div>`+prods.map(p=>`<div class="si" onclick="openProductModal(${p.id});closeSearch()"><div class="si-ico">${p.e}</div><div class="si-main"><div class="si-name">${p.n}</div><div class="si-sub">Người bán: ${p.seller} · ${p.loc}</div></div><div class="si-price">${priceStr(p.p)}</div></div>`).join(''); }
+  if(tuts.length){ html+=`<div class="sdiv"></div><div class="sg-title">📚 Gia sư</div>`+tuts.map(t=>`<div class="si" onclick="navigate('tutors');document.getElementById('tsearch').value='${t.name}';setTimeout(filterTutors,100);closeSearch()"><div class="si-ico" style="width:34px;height:34px;border-radius:50%;background:${t.color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px">${t.init}</div><div class="si-main"><div class="si-name">${t.name}</div><div class="si-sub">${t.subjects.slice(0,3).join(' · ')}</div></div><div class="si-price">${priceStr(t.price)}/giờ</div></div>`).join(''); }
+  if(fors.length){ html+=`<div class="sdiv"></div><div class="sg-title">💬 Diễn đàn</div>`+fors.map(f=>`<div class="si" onclick="navigate('forum');closeSearch()"><div class="si-ico">💬</div><div class="si-main"><div class="si-name">${f.title}</div><div class="si-sub">${f.author} · ${f.time}</div></div></div>`).join(''); }
+  if(jbs.length){ html+=`<div class="sdiv"></div><div class="sg-title">💼 Việc làm</div>`+jbs.map(j=>`<div class="si" onclick="navigate('jobs');closeSearch()"><div class="si-ico">${j.logo}</div><div class="si-main"><div class="si-name">${j.title}</div><div class="si-sub">${j.co}</div></div><div class="si-price">${j.pay}</div></div>`).join(''); }
+  html+=`<div class="see-all-btn" onclick="globalSearchAll('${q}')">Xem tất cả ${total} kết quả cho "${q}"</div>`;
+  drop.innerHTML=html; drop.classList.remove('hide');
+}
+
+function globalSearchAll(q){
+  closeSearch();
+  document.getElementById('gsearch').value=q;
+  navigate('products',{pcat:'all'}); // luôn về "Tất cả" để không bị danh mục cũ che mất kết quả
+  setTimeout(()=>{ document.getElementById('psearch').value=q; filterProducts(); },100);
+}
+
+function closeSearch(){ document.getElementById('sdrop').classList.add('hide'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('.sw')) closeSearch(); });
+// ============================================================================
+// cart.js — Giỏ hàng: thêm sản phẩm, đổi số lượng, xoá, hiện tổng tiền.
+// ============================================================================
+function addToCart(id){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  const ex = S.cart.find(x=>x.id===id);
+  if(ex) ex.qty++; else S.cart.push({...p, qty:1});
+  updateCartBadge(); showToast(`Đã thêm "${p.n.substring(0,25)}..." vào giỏ 🛒`);
+}
+function updateCartBadge(){ document.getElementById('cart-badge').textContent=S.cart.reduce((a,b)=>a+b.qty,0); }
+function toggleCart(){
+  const ov=document.getElementById('cart-overlay'), sb=document.getElementById('cart-sidebar');
+  const isOpen=sb.classList.contains('open');
+  ov.classList.toggle('hide',isOpen); sb.classList.toggle('open',!isOpen);
+  if(!isOpen) renderCart();
+}
+function renderCart(){
+  const body=document.getElementById('cart-body'), ftr=document.getElementById('cart-footer');
+  if(!S.cart.length){ body.innerHTML=`<div class="ecrt"><div class="ecico">🛒</div><p>Giỏ hàng trống</p><button onclick="toggleCart();navigate('products',{pcat:'all'})">Mua sắm ngay</button></div>`; ftr.innerHTML=''; return; }
+  body.innerHTML=S.cart.map(item=>`<div class="ci">
+    <div class="ciimg">${item.e}</div>
+    <div class="cii">
+      <div class="cin">${item.n.substring(0,40)}${item.n.length>40?'...':''}</div>
+      <div class="cip">${priceStr(item.p)}</div>
+      <div class="ciqw">
+        <button class="qb" onclick="updateQty(${item.id},-1)">−</button>
+        <span class="qn">${item.qty}</span>
+        <button class="qb" onclick="updateQty(${item.id},1)">+</button>
+      </div>
+    </div>
+    <button class="cdel" onclick="removeCartItem(${item.id})">🗑️</button>
+  </div>`).join('');
+  const total=S.cart.reduce((a,b)=>a+b.p*b.qty,0);
+  ftr.innerHTML=`<div class="ctot"><span>Tổng cộng:</span><span style="color:var(--red)">${priceStr(total)}</span></div><button class="ckbtn" onclick="showToast('Tính năng thanh toán sẽ sớm ra mắt! 🎉')">Thanh toán ngay 💳</button>`;
+}
+function updateQty(id, delta){
+  const item=S.cart.find(x=>x.id===id); if(!item) return;
+  item.qty+=delta; if(item.qty<=0) S.cart=S.cart.filter(x=>x.id!==id);
+  updateCartBadge(); renderCart();
+}
+function removeCartItem(id){ S.cart=S.cart.filter(x=>x.id!==id); updateCartBadge(); renderCart(); }
+// ============================================================================
+// notifications.js — Bảng thông báo hiện ra khi bấm chuông 🔔 (yêu cầu đăng
+// nhập, vì thông báo gắn với hoạt động của tài khoản).
+// ============================================================================
+function toggleNotifications(){
+  if(!requireLogin('xem thông báo')) return;
+  const drop = document.getElementById('notif-drop');
+  closeSearch();
+  if(!drop.classList.contains('hide')){ drop.classList.add('hide'); return; }
+  drop.innerHTML = `<div class="sg-title">🔔 Thông báo</div>` + NOTIFICATIONS.map(n=>`
+    <div class="si" onclick="closeNotifications()">
+      <div class="si-ico">${n.e}</div>
+      <div class="si-main"><div class="si-name">${n.text}</div><div class="si-sub">${n.time}</div></div>
+    </div>`).join('');
+  drop.classList.remove('hide');
+}
+function closeNotifications(){ document.getElementById('notif-drop')?.classList.add('hide'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('.notif-wrap')) closeNotifications(); });
+// ============================================================================
+// chat.js — Hộp thư nhắn tin với người bán (yêu cầu đăng nhập). Có màn hình
+// danh sách hội thoại (hộp thư) và màn hình 1 cuộc hội thoại cụ thể, dùng lại
+// chung khung modal có sẵn (#modal/#modal-box).
+// ============================================================================
+
+function nowTimeStr(){
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+
+function renderChatInboxHTML(){
+  S.activeChatId = null;
+  const list = CHATS.length ? CHATS.map(c=>{
+    const last = c.messages[c.messages.length-1];
+    return `<div class="si" onclick="openChatThread(${c.id})">
+      <div class="cavt" style="background:${c.sellerColor}">${c.sellerInit}</div>
+      <div class="si-main"><div class="si-name">${c.sellerName}</div><div class="si-sub">${last.from==='me'?'Bạn: ':''}${last.text}</div></div>
+      <div class="ci-time">${last.time}</div>
+    </div>`;
+  }).join('') : `<div class="sempty">Chưa có cuộc trò chuyện nào. Bấm "Nhắn tin người bán" ở 1 sản phẩm để bắt đầu nhé!</div>`;
+  return `<div class="mh"><div class="mtitle">💬 Hộp thư</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody" style="padding:6px 0 16px">${list}</div>`;
+}
+
+function openChatInbox(){
+  if(!requireLogin('xem hộp thư')) return;
+  document.getElementById('modal-box').innerHTML = renderChatInboxHTML();
+  document.getElementById('modal').classList.remove('hide');
+}
+
+function renderChatThreadHTML(chat){
+  const bubbles = chat.messages.map(m=>`
+    <div class="cmsg ${m.from==='me'?'mine':'theirs'}"><div class="cbubble">${m.text}</div><div class="ctime">${m.time}</div></div>`).join('');
+  return `<div class="mh">
+      <button class="cback" onclick="openChatInbox()">←</button>
+      <div class="mtitle" style="flex:1">${chat.sellerName}<div class="csub">${chat.productName}</div></div>
+      <button class="mcl" onclick="closeModal()">✕</button>
+    </div>
+    <div class="cthread" id="chat-thread-body">${bubbles}</div>
+    <div class="cinput"><input id="chat-input" placeholder="Nhập tin nhắn..." onkeydown="if(event.key==='Enter')sendChatMessage()"><button onclick="sendChatMessage()">Gửi</button></div>`;
+}
+
+function openChatThread(chatId){
+  if(!requireLogin('xem cuộc trò chuyện')) return;
+  const chat = CHATS.find(c=>c.id===chatId);
+  if(!chat) return;
+  S.activeChatId = chatId;
+  document.getElementById('modal-box').innerHTML = renderChatThreadHTML(chat);
+  document.getElementById('modal').classList.remove('hide');
+  scrollChatToBottom();
+  document.getElementById('chat-input')?.focus();
+}
+
+function scrollChatToBottom(){
+  const body = document.getElementById('chat-thread-body');
+  if(body) body.scrollTop = body.scrollHeight;
+}
+
+function sendChatMessage(){
+  const input = document.getElementById('chat-input');
+  if(!input) return;
+  const text = input.value.trim();
+  if(!text) return;
+  const chat = CHATS.find(c=>c.id===S.activeChatId);
+  if(!chat) return;
+  chat.messages.push({from:'me', text, time:nowTimeStr()});
+  document.getElementById('modal-box').innerHTML = renderChatThreadHTML(chat);
+  scrollChatToBottom();
+  document.getElementById('chat-input')?.focus();
+  const thisId = chat.id;
+  setTimeout(()=>{
+    const replies = ['Dạ vâng bạn nha!','Để mình kiểm tra lại rồi rep bạn sau ít phút nha 🙏','Ok bạn, vậy mình thống nhất vậy nha!','Bạn để lại số điện thoại để mình liên hệ trực tiếp nha.'];
+    chat.messages.push({from:'them', text: replies[Math.floor(Math.random()*replies.length)], time: nowTimeStr()});
+    if(S.activeChatId===thisId){
+      document.getElementById('modal-box').innerHTML = renderChatThreadHTML(chat);
+      scrollChatToBottom();
+    }
+  }, 1400);
+}
+
+// Mở (hoặc tạo mới nếu chưa có) cuộc chat với 1 người bán — gọi từ nút "Nhắn
+// tin người bán" ở khung xem chi tiết sản phẩm.
+function openChatWithSeller(sellerName, sellerInit, sellerColor, productName){
+  if(!requireLogin('nhắn tin với người bán')) return;
+  let chat = CHATS.find(c=>c.sellerName===sellerName && c.productName===productName);
+  if(!chat){
+    chat = {id: chatAutoId++, sellerName, sellerInit, sellerColor, productName, messages:[
+      {from:'them', text:`Chào bạn, bạn cần hỗ trợ gì về "${productName}" vậy ạ?`, time: nowTimeStr()}
+    ]};
+    CHATS.unshift(chat);
+  }
+  openChatThread(chat.id);
+}
+// ============================================================================
+// post-listing.js — Đăng tin bán/cho thuê mới, hiện ngay lên trang chủ & trang
+// Mua & Bán (chỉ lưu trong phiên làm việc hiện tại, chưa nối CSDL thật).
+// Yêu cầu đăng nhập.
+// ============================================================================
+function openPostListingModal(){
+  if(!requireLogin('đăng tin bán')) return;
+  const catOpts = CATS.map(c=>`<option value="${c.id}">${c.e} ${c.n}</option>`).join('');
+  document.getElementById('modal-box').innerHTML = `
+    <div class="mh"><div class="mtitle">📝 Đăng tin bán / cho thuê</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="frow"><label class="flabel">Tên sản phẩm / tin đăng</label><input class="finput" id="pl-name" placeholder="VD: Áo khoác denim size M"></div>
+      <div class="frow2">
+        <div class="frow"><label class="flabel">Giá (đ)</label><input class="finput" id="pl-price" type="number" min="0" placeholder="VD: 150000"></div>
+        <div class="frow"><label class="flabel">Danh mục</label><select class="finput" id="pl-cat">${catOpts}</select></div>
+      </div>
+      <div class="frow2">
+        <div class="frow"><label class="flabel">Khu vực</label><input class="finput" id="pl-loc" placeholder="VD: Q.6"></div>
+        <div class="frow"><label class="flabel">Tình trạng</label>
+          <select class="finput" id="pl-cond">
+            <option value="new">Mới</option>
+            <option value="used">Đã dùng</option>
+            <option value="secondhand">Second-hand</option>
+            <option value="available">Còn phòng (cho thuê)</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow"><label class="flabel">Mô tả</label><textarea class="finput ftxtarea" id="pl-desc" rows="3" placeholder="Mô tả chi tiết, tình trạng, lý do bán..."></textarea></div>
+      <div class="frow"><label class="flabel">Emoji đại diện (tuỳ chọn)</label><input class="finput" id="pl-emoji" maxlength="2" placeholder="📦" value="📦" style="width:70px"></div>
+      <div class="ferr hide" id="pl-err"></div>
+      <button class="fbtn-primary" onclick="submitNewListing()">Đăng tin ngay</button>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+
+function submitNewListing(){
+  const name = document.getElementById('pl-name').value.trim();
+  const price = parseInt(document.getElementById('pl-price').value, 10);
+  const cat = document.getElementById('pl-cat').value;
+  const loc = document.getElementById('pl-loc').value.trim();
+  const cond = document.getElementById('pl-cond').value;
+  const desc = document.getElementById('pl-desc').value.trim();
+  const emoji = document.getElementById('pl-emoji').value.trim() || '📦';
+  if(!name){ showFormError('pl-err','Bạn nhập tên sản phẩm/tin đăng nha!'); return; }
+  if(!price || price<=0){ showFormError('pl-err','Bạn nhập giá hợp lệ (lớn hơn 0) nha!'); return; }
+  if(!loc){ showFormError('pl-err','Bạn nhập khu vực nha!'); return; }
+  const bgOpts = ['p1','p2','p3','p4','p5','p6','p7','p8'];
+  const newId = Math.max(...PRODUCTS.map(p=>p.id), 0) + 1;
+  const item = {id:newId, n:name, p:price, op:null, cat, cond, e:emoji, bg:bgOpts[newId%bgOpts.length], seller:S.user.name, loc, desc: desc || 'Người bán chưa cập nhật mô tả chi tiết.'};
+  PRODUCTS.unshift(item);
+  S.myListingIds.push(newId);
+  closeModal();
+  showToast('Đăng tin thành công! Tin của bạn đã lên trang chủ 🎉');
+  if(S.page==='home') renderHome();
+  if(S.page==='products') renderProducts();
+}
+// ============================================================================
+// modals.js — Cửa sổ chi tiết hiện lên (popup) khi xem 1 sản phẩm hoặc 1 gia
+// sư cụ thể.
+// ============================================================================
+function openProductModal(id){
+  const p=PRODUCTS.find(x=>x.id===id); if(!p) return;
+  const esc=s=>String(s).replace(/'/g,"\\'");
+  document.getElementById('modal-box').innerHTML=`
+    <div class="mh"><div>${condLabel(p.cond)}</div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="m-pimg ${p.bg}">${p.e}</div>
+      <div class="m-pname">${p.n}</div>
+      <div class="m-price">${priceStr(p.p)}</div>
+      ${p.op?`<div class="m-oprice">Giá gốc: ${priceStr(p.op)} – Tiết kiệm ${priceStr(p.op-p.p)}</div>`:''}
+      <div class="m-seller">👤 Người bán: <strong>${p.seller}</strong> &nbsp;|&nbsp; 📍 ${p.loc} &nbsp;|&nbsp; ⭐ Đã xác thực DHV</div>
+      <div class="m-desc">${p.desc}</div>
+      <div class="m-btns">
+        <button class="m-add" onclick="addToCart(${p.id});showToast('Đã thêm vào giỏ!')">🛒 Thêm vào giỏ</button>
+        <button class="m-chat" onclick="openChatWithSeller('${esc(p.seller)}','${initialsFrom(p.seller)}','${colorFromString(p.seller)}','${esc(p.n)}')">💬 Nhắn tin người bán</button>
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+function openTutorModal(id){
+  const t=TUTORS.find(x=>x.id===id); if(!t) return;
+  document.getElementById('modal-box').innerHTML=`
+    <div class="mh"><div></div><button class="mcl" onclick="closeModal()">✕</button></div>
+    <div class="mbody">
+      <div class="m-tav" style="background:linear-gradient(135deg,${t.color},${t.color}99)">${t.init}</div>
+      <div class="m-tname">${t.name}</div>
+      <div class="m-tinfo">${t.faculty} · ${t.year} &nbsp;|&nbsp; 📍 ${t.area}</div>
+      <div class="m-tsubj">${t.subjects.map(s=>`<span class="m-stag">${s}</span>`).join('')}</div>
+      <div class="m-tprice">${priceStr(t.price)}</div>
+      <div class="m-tsub">mỗi giờ · Lịch dạy: ${t.avail}</div>
+      <div class="m-trat"><span class="m-stars">${stars(t.rating)}</span><span style="font-size:16px;font-weight:700">${t.rating}/5.0</span><span style="color:var(--muted)">(${t.reviews} đánh giá)</span></div>
+      <div class="m-tbio">📝 ${t.bio}</div>
+      <button class="contact-full" onclick="openChatWithSeller('${t.name.replace(/'/g,"\\'")}','${t.init}','${t.color}','Lớp gia sư ${t.subjects[0].replace(/'/g,"\\'")}')">📩 Gửi yêu cầu kết nối ngay</button>
+    </div>`;
+  document.getElementById('modal').classList.remove('hide');
+}
+function closeModal(e){ if(!e||e.target===e.currentTarget||e.currentTarget.tagName==='BUTTON') document.getElementById('modal').classList.add('hide'); }
+// ============================================================================
+// nav.js — Bộ điều hướng trung tâm: chuyển trang, highlight đúng mục đang
+// chọn trên thanh menu, và reset bộ lọc khi cần.
+//
+// ĐÃ SỬA so với bản gốc:
+//  1) navigate() giờ áp dụng đúng tham số pcond/psearch khi được truyền vào
+//     (trước đây chỉ áp dụng pcat, nên nút "Xem tất cả" của mục đồ secondhand
+//     ở trang chủ luôn bị reset về "Tất cả" thay vì chỉ lọc đồ secondhand).
+//  2) Thanh menu trên cùng giờ chỉ sáng đúng 1 mục đang chọn. Trước đây 4 mục
+//     "Mua & Bán/Thời trang/Điện tử/Handmade" luôn sáng cùng lúc vì chúng dùng
+//     chung data-page="products", không phân biệt danh mục con.
+// ============================================================================
+
+function navigate(page, params={}) {
+  S.page = page;
+  if(params.pcat !== undefined){
+    S.pcat = params.pcat;
+    S.pcond = params.pcond !== undefined ? params.pcond : 'all';
+    S.psort = 'newest';
+    S.psearch = params.psearch !== undefined ? params.psearch : '';
+    document.getElementById('pcond').value = S.pcond;
+    document.getElementById('psort').value = 'newest';
+    document.getElementById('psearch').value = S.psearch;
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
+  document.querySelectorAll(`.ni[data-page="${page}"]`).forEach(n=>{
+    if(page==='products' && n.dataset.pcat){ if(n.dataset.pcat===S.pcat) n.classList.add('act'); }
+    else n.classList.add('act');
+  });
+  closeSearch();
+  if(page==='home') renderHome();
+  if(page==='products') renderProducts();
+  if(page==='tutors') renderTutors();
+  if(page==='forum') renderForum();
+  if(page==='jobs') renderJobs();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+// ============================================================================
+// app.js — Điểm khởi động của web. File này phải được tải SAU CÙNG (xem thứ
+// tự script trong index.html) vì nó gọi renderHome() ngay khi chạy, lúc đó
+// mọi dữ liệu (data.js) và hàm vẽ trang (pages/home.js, cards.js...) cần đã
+// được nạp xong từ trước.
+// ============================================================================
+renderHome();
+</script>
+</body>
+</html>
